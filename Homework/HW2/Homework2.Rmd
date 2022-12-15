@@ -1,0 +1,344 @@
+---
+title: "Homework 2"
+output:
+  word_document: default
+  html_notebook: default
+  pdf_document: default
+---
+```{r}
+library(pacman)
+library(gam); data("kyphosis")
+require(caTools)
+library(glmnet)  
+library(dplyr)  
+library(psych) 
+library(tidyverse)
+library(caret)
+library(pls)
+library(e1071)
+library(MASS)
+library(klaR)
+library(nnet)
+library(sigmoid)
+library(nnet)
+library(fastDummies)
+head(kyphosis)
+```
+
+Q1: Based on the formulas we derived in class, derive the decision boundary between the two classes given the distribution parameters below.
+```{r}
+
+```
+
+LDA.png
+
+#### Q2: Use data set kyphosis from R package “gam”, randomly divide the data into training (75%) and testing (25%) set.
+```{r}
+
+#Splitting Data into Training and Testing Data
+set.seed(11)
+training.samples <- kyphosis$Kyphosis %>%
+  createDataPartition(p = 0.75, list = FALSE)
+train.data  <- kyphosis[training.samples, ]
+train.data = data.frame(train.data)
+test.data <- kyphosis[-training.samples, ]
+test.data = data.frame(test.data)
+
+
+#Proving the proper split
+SizeOriginal <- nrow(kyphosis)
+SizeTraining <- nrow(train.data)
+SizeTest <- nrow(test.data)
+PercentageTraining <- (SizeTraining/SizeOriginal)*100
+PercentageTest <- (SizeTest/SizeOriginal)*100
+
+sprintf('Percent of Testing Data = %f', PercentageTest)
+sprintf('Percent of Training Data = %f', PercentageTraining)
+```
+
+#### 2.1 Fit a regularized discriminant analysis model, find the best tuning parameter combination, and evaluate the model using the testing set and report the confusion matrix
+```{r}
+
+set.seed(11)
+model.rda <- rda(Kyphosis~.,data=train.data)
+grid = trainControl(method = "cv", number = 5)
+fit_rda_grid = train(Kyphosis ~ ., data = train.data, method = "rda", trControl = grid)
+
+fit_rda_grid
+plot(fit_rda_grid)
+     
+predictions.rda = predict(model.rda, test.data)
+confusionM.rda<-confusionMatrix(predictions.rda$class,test.data$Kyphosis)
+print(confusionM.rda$table)
+print(confusionM.rda)
+
+#Best Tuning Parameters are Gamma and Lambda
+```
+
+#### 2.2 Fit a logistic regression model, and interpret the coefficients you estimated
+```{r}
+# Fit the model
+model.lReg <- nnet::multinom(Kyphosis ~., data = train.data)
+predicted.lReg <- model.lReg %>% predict(test.data)
+accuracy.lReg <- mean(predicted.lReg == test.data$Kyphosis)
+sprintf('Model Accuracy = %f', accuracy.lReg)
+
+confusionM.lReg<-confusionMatrix(predicted.lReg, test.data$Kyphosis)
+print(confusionM.lReg)
+summary(model.lReg)
+# Based off the results, 
+# Age has little effect to if kyphosis is found in the child, 
+# Start(which vertebrae the surgeon started on) has a negative correlation, 
+# Number of operations has a positive correlation to finding the kyphosis.
+```
+
+
+#### 2.3 Fit a regularized logistic regression model, and find the best model from your regularization
+```{r}
+
+x <- train.data[,2:4] %>% as.matrix()
+y <- train.data[,1] %>% as.matrix()
+
+y_dummy <- dummy_columns(y)
+colnames(y_dummy)[colnames(y_dummy) == "V_absent"] <- "absent"
+colnames(y_dummy)[colnames(y_dummy) == "V_present"] <- "present"
+
+
+y_dummy1 <- y_dummy[,2:3] %>% as.matrix()
+
+# Perform 10-fold cross-validation to select lambda ---------------------------
+lambdas_to_try <- 10^seq(-3, 3, length.out = 100)
+
+# Setting alpha = 1 implements lasso regression
+lasso_cv <- cv.glmnet(x, y_dummy1, family="multinomial", alpha = 1, lambda = lambdas_to_try,
+                      standardize = TRUE, nfolds = 10)
+plot(lasso_cv)
+lasso_model<-glmnet(x, y_dummy1, family="multinomial", alpha = 1,  lambda=lasso_cv$lambda.min, standardize = TRUE)
+test_class_hat<-as.factor(predict(lasso_model, newx = as.matrix(test.data[,2:4]),type="class"))
+
+
+```
+
+#### 3.1 Use mvrnorm function to generate the training data set below (use seed(100)):
+```{r}
+# Training Data
+set.seed(100)
+
+cmatrix = cbind(c(1, 0.8),c(0.8, 1.5))
+mu = c(0,0)
+mu = as.matrix(mu)
+mu = t(mu)
+
+cmatrix2 = cbind(c(0.5, 0.4),c(0.4, 1))
+
+mu2 = c(0.5,0.5)
+mu2 = as.matrix(mu2)
+mu2 = t(mu2)
+nrows = 50
+
+x1 = data.frame(mvrnorm(n = 50, mu = mu , Sigma = cmatrix))
+x2 = data.frame(mvrnorm(n = 50, mu = mu2, Sigma = cmatrix2))
+x_train = rbind(x1,x2)
+
+Y_train = rep(c(1,-1), c(50,50))
+
+Y = as.factor(Y_train)
+dat = cbind(x_train, Y)
+dat = data.frame(dat)
+
+
+
+```
+#### 3.2 Fit a nonlinear SVM model (using radial kernel) based on the training data generated in 3.1, and make a plot to visualize the decision boundary (set cost=10).
+```{r}
+
+
+svmfit = svm(Y ~ ., data = dat, kernel = "radial", cost = 10, scale = FALSE, type = 'C-classification')
+print(svmfit)
+dat.svm<-predict(svmfit,data=dat)
+
+
+make.grid = function(x_train, n = 100) {
+  grange = apply(x_train, 2, range)
+  x1 = seq(from = grange[1,1], to = grange[2,1], length = n)
+  x2 = seq(from = grange[2,1], to = grange[1,1], length = n)
+  expand.grid(X1 = x1, X2 = x2)
+}
+xgrid = make.grid(x_train)
+
+ygrid = predict(svmfit, xgrid)
+plot(xgrid, col = c("black","red")[as.numeric(ygrid)], pch = 20, cex = .2)
+points(x_train, col = Y , pch = 19)
+points(x_train[svmfit$index,], pch = 5, cex = 2)
+
+```
+#### 3.3 Use the same approach in 3.1 to generate the testing data set with 100 samples (use seed(123)).a) Evaluate the classification performance using the classification accuracy based on the testing data set.b) Specify the number of type I errors and type II errors based on the confusion matrix.
+```{r}
+
+# Testing data
+set.seed(123)
+
+
+Sigma = cbind(c(1, 0.8),c(0.8, 1.5))
+mu = c(0,0)
+mu = as.matrix(mu)
+mu = t(mu)
+
+Sigma2 = cbind(c(0.5, 0.4),c(0.4, 1))
+
+mu2 = c(0.5,0.5)
+mu2 = as.matrix(mu2)
+mu2 = t(mu2)
+nrows = 50
+
+x1 = data.frame(mvrnorm(n = 50, mu = mu , Sigma = Sigma))
+x2 = data.frame(mvrnorm(n = 50, mu = mu2, Sigma = Sigma2))
+x_test = rbind(x1,x2)
+
+Y_test = rep(c(1,-1), c(50,50))
+
+Y_test2 = as.factor(Y_test)
+dat.test = cbind(x_test, Y_test2)
+dat.test = data.frame(dat.test)
+
+results = predict(svmfit, dat.test)
+results = as.factor(results)
+
+ConfusionM.svm<-confusionMatrix(results, dat.test$Y)
+print(ConfusionM.svm)
+
+```
+
+
+#### 3.4 (Bonus 2 points) Use a for-loop to test the performance of the SVM model using radial kernel when using cost = 1, 10, 100, 1000, and report the performance based on the testing set by plotting the classification accuracy vs log10(cost).
+```{r}
+
+
+```
+
+#### Read section 11.6 of the textbook "Elements of Statistical Learning". Follow the steps in the textbook and recreate the Figure 11.6, 11.7, and 11.8 for the Sum of sigmoids only. The objective of this question is helping you better understand the effect of parameter selection on the accuracy of the trained neural network.
+```{r}
+
+# Generating the training data
+set.seed(100)
+x1_train = data.frame(rnorm(100, mean = 0, sd = 1))
+set.seed(101)
+x2_train = data.frame(rnorm(100, mean = 0, sd = 1))
+
+x_train = cbind(x1_train,x2_train)
+colnames(x_train) = c('x1', 'x2')
+x_train2 = matrix(as.numeric(unlist(x_train)),nrow=nrow(x_train))
+
+a1 = c(3,3)
+a2 = c(3,-3)
+
+a1 = matrix(a1)
+a2 = matrix(a2)
+
+Y_train = sigmoid(x_train2 %*% a1) + sigmoid(x_train2 %*% a2)
+
+
+# Generating the testing data
+set.seed(102)
+x1_test = data.frame(rnorm(10000, mean = 0, sd = 1))
+set.seed(103)
+x2_test = data.frame(rnorm(10000, mean = 0, sd = 1))
+
+x_test = cbind(x1_test,x2_test)
+colnames(x_test) = c('x1', 'x2')
+x_test2 = matrix(as.numeric(unlist(x_test)),nrow=nrow(x_test))
+
+
+Y_test = sigmoid(x_test2 %*% a1) + sigmoid(x_test2 %*% a2)
+
+```
+
+```{r}
+# Developing Neural Network
+
+
+AvgError = c()
+Size = c(1,2,3,4,5,6,7,8,9,10)
+
+
+# Standard Weight Decay
+
+for (i in seq(Size)){
+  ran.nn <- nnet(x_train, Y_train, size = i, rang = 0.1, decay = .005, maxit = 200)
+  predic = predict(ran.nn, x_test2)
+  TestError = (Y_test - predic)^2
+  AvgError = c(AvgError,TestError)
+}
+
+
+AvgError2 = c()
+Size = c(1,2,3,4,5,6,7,8,9,10)
+
+# No Weight Decay
+
+for (i in seq(Size)){
+  ran.nn <- nnet(x_train, Y_train, size = i, rang = 0.1, decay = 0, maxit = 200)
+  predic = predict(ran.nn, x_test2)
+  TestError = (Y_test - predic)^2
+  AvgError2 = c(AvgError2,TestError)
+}
+
+AvgError3 = c()
+Size = c(1,2,3,4,5,6,7,8,9,10)
+
+# Large Weight Decay
+
+for (i in Size){
+  ran.nn <- nnet(x_train, Y_train, size = i, rang = 0.1, decay = .1, maxit = 200)
+  predic = predict(ran.nn, x_test2)
+  TestError = (Y_test - predic)^2
+  AvgError3 = c(AvgError3,TestError)
+}
+
+
+
+AvgError4 = c()
+Weights = c(.00,.01,.02,.03,.04,.05,.06,.07,.08,.09,.10,.11,.12,.13,.14,.15)
+
+# Changing Weights
+
+for (i in Weights){
+  ran.nn <- nnet(x_train, Y_train, size = 10, rang = 0.1, decay = i, maxit = 200)
+  predic = predict(ran.nn, x_test2)
+  TestError = (Y_test - predic)^2
+  AvgError4 = c(AvgError4,TestError)
+}
+
+
+# Making the Box plots
+
+Size = data.frame(Size)
+Weights = data.frame(Weights)
+Error1 = data.frame(AvgError)
+Error2 = data.frame(AvgError2)
+Error3 = data.frame(AvgError3)
+Error4 = data.frame(AvgError4)
+
+Error1 = cbind.data.frame(Size, Error1)
+Error2 = cbind.data.frame(Size, Error2)
+Error3 = cbind.data.frame(Size, Error3)
+Error4 = cbind.data.frame(Weights, Error4)
+
+
+
+boxplot(AvgError~Size, data = Error1, main = "Sum of Sigmoids", xlab = "Number of Hidden Units", ylab = "Test Error")
+
+boxplot(AvgError2~Size, data = Error2, main = "No Weight Decay", xlab = "Number of Hidden Units", ylab = "Test Error")
+
+boxplot(AvgError3~Size, data = Error3, main = "Large Weight Decay", xlab = "Number of Hidden Units", ylab = "Test Error")
+
+boxplot(AvgError4~Weights, data = Error4, main = "Sum of Sigmoids, 10 units", xlab = "Weight Decay Parameter", ylab = "Test Error")
+
+```
+
+
+
+
+
+
+

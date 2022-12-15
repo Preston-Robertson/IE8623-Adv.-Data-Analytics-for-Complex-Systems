@@ -1,0 +1,206 @@
+---
+title: "Homework 3"
+author: "Preston Robertson"
+date: "12/7/2021"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(pacman)
+require(caTools)
+library(glmnet)  
+library(dplyr)  
+library(psych) 
+library(tidyverse)
+library(caret)
+library(pls)
+library(e1071)
+library(MASS)
+library(klaR)
+library(nnet)
+library(sigmoid)
+library(nnet)
+library(fastDummies)
+library(gam); data("kyphosis")
+head(kyphosis)
+```
+
+
+#### Question 1: #####################################################################################################
+
+#### Use data set kyphosis from R package “gam”, randomly divide the data into training (75%) and testing (25%) set.
+
+```{r}
+
+#Splitting Data into Training and Testing Data
+set.seed(11)
+
+training.samples <- kyphosis$Kyphosis %>%
+  createDataPartition(p = 0.75, list = FALSE)
+train.data  <- kyphosis[training.samples, ]
+train.data = data.frame(train.data)
+test.data <- kyphosis[-training.samples, ]
+test.data = data.frame(test.data)
+
+
+#Proving the proper split
+SizeOriginal <- nrow(kyphosis)
+SizeTraining <- nrow(train.data)
+SizeTest <- nrow(test.data)
+PercentageTraining <- (SizeTraining/SizeOriginal)*100
+PercentageTest <- (SizeTest/SizeOriginal)*100
+
+sprintf('Percent of Testing Data = %f', PercentageTest)
+sprintf('Percent of Training Data = %f', PercentageTraining)
+
+
+```
+
+#### Question 1.1: Use function “gam” to fit a logistic regression model. Add nonlinear terms as you see fit. 
+
+```{r}
+
+gam2 = gam(I(Kyphosis == "present") ~ s(Age, 1) + s(Start, 1) + s(Number, 1), data = kyphosis)
+par(mfrow = c(1,3))
+plot(gam2, se = TRUE, col = "blue")
+summary(gam2)
+
+```
+```{r}
+
+gam3 = gam(I(Kyphosis == "present") ~ s(Age, 2) + s(Start, 2) + s(Number, 2), data = kyphosis)
+par(mfrow = c(1,3))
+plot(gam3, se = TRUE, col = "blue")
+summary(gam3)
+
+```
+```{r}
+
+gam4 = gam(I(Kyphosis == "present") ~ s(Age, 8) + s(Start, 8) + s(Number, 8), data = kyphosis)
+par(mfrow = c(1,3))
+plot(gam4, se = TRUE, col = "blue")
+summary(gam4)
+
+```
+
+
+
+#### Question 1.2: Compare your testing results of the model built in 1.1 with the results you obtained in HW2 Q2 (2.2). Do you observe any improvements? Why or why not?
+
+```{r}
+# Rerun of Homework 2 Question 2
+
+# Fit the model
+model.lReg <- nnet::multinom(Kyphosis ~., data = train.data)
+predicted.lReg <- model.lReg %>% predict(test.data)
+accuracy.lReg <- mean(predicted.lReg == test.data$Kyphosis)
+sprintf('Model Accuracy = %f', accuracy.lReg)
+
+confusionM.lReg<-confusionMatrix(predicted.lReg, test.data$Kyphosis)
+print(confusionM.lReg)
+summary(model.lReg)
+
+```
+```{r}
+
+print(anova(gam2, gam3, gam4, test = "F"))
+
+## Comparing GAM models using residual deviance, which shows how well the model responds to the predictors
+### GAM 2: 9.9738
+### GAM 3: 9.1148
+### GAM 4: 6.9723
+### Original Model: 51.446
+
+## Comparing Models using AIC, a previous used metric to compare models.
+### GAM 2: 70.2143 
+### GAM 3: 68.9197
+### GAM 4: 81.2155
+### Original Model: 59.4405
+
+
+# Discussion: 
+## This makes me believe model GAM 3 would be the best fit including the solution from our last homework. This is due the model having both the second lowest AIC and Residual Deviance which makes it the best model overall. 
+
+```
+
+
+#### Question 2 ######################################################################################################
+
+#### Use data set CanadianWeather from R package “fda”
+
+```{r}
+
+library(fda); data("CanadianWeather")
+
+```
+
+#### Question 2.1: Choose the level of smoothing using generalized cross validation criterion to represent CanadianWeather$monthlyPrecip using a functional object.
+
+```{r}
+# Setting up 
+Weatherrange <- c(0,365)
+Weatherbasis <- create.fourier.basis(Weatherrange, nbasis=21, period = 365)
+Weathertime <- seq(.5,11.5,1)
+harmaccelLfd <- vec2Lfd(c(0, (2*pi/365)^2, 0), rangeval=Weatherrange)
+
+
+# Running
+WeatherLoglam <- seq(-4,0,0.25) # Generating the parameter to smooth stats
+nglam   <- length(WeatherLoglam)
+
+
+WeatherSmoothStats <- array(NA, dim=c(nglam, 3),
+      dimnames=list(WeatherLoglam, c("log10.lambda", "df", "gcv") ) )
+WeatherSmoothStats[, 1] <- WeatherLoglam
+
+
+for (ilam in 1:nglam) {
+  WeatherSmooth <- smooth.basisPar(Weathertime, CanadianWeather$monthlyPrecip, Weatherbasis,
+                   Lfdobj=int2Lfd(2), lambda=10^WeatherLoglam[ilam])
+  WeatherSmoothStats[ilam, "df"]  <- WeatherSmooth$df
+  WeatherSmoothStats[ilam, "gcv"] <- sum(WeatherSmooth$gcv)
+
+}
+
+
+
+WeatherSmoothStats
+plot(WeatherSmoothStats[, 1], WeatherSmoothStats[, 3])
+
+```
+
+#### Question 2.2: Perform functional PCA analysis to CanadianWeather$monthlyPrecip. Plot the first two PCs with perturbation. Interpret the first two PCs extracted (what variation pattern each PC represents?). 
+
+```{r}
+
+
+Weatherfd <- smooth.basisPar(Weathertime, CanadianWeather$monthlyPrecip,
+       Weatherbasis, Lfdobj=harmaccelLfd, lambda=1e-2)$fd
+
+# PCA
+WeatherfdPar  <- fdPar(Weatherbasis, harmaccelLfd, lambda=1e-2)
+Weatherpca.fd <- pca.fd(Weatherfd, nharm=2, WeatherfdPar)
+Weatherpca.fd <- varmx.pca.fd(Weatherpca.fd)
+
+
+# Plotting
+op <- par(mfrow=c(2,2))
+plot.pca.fd(Weatherpca.fd, cycle=TRUE)
+par(op)
+
+## Interpret the first two PCs extracted
+# Both functions are plotted with x being days out of the year and y being the variation, Based off these graphs it can be interpreted that the PCA function 1 has very variability at the beginning of the year and the rest rest of the year has very low variation. PCA function 2 is vice-versa. This shows that the two PCA functions are enough to represent the Canadian Weather data because the high variation does not overlap.
+
+```
+
+#### Question 2.3: (Bonus 2 point) Apply bivariate functional PCA to monthlyPrecip and monthlyTemp. Plot the first two PCs with perturbation (temp vs. precip). Interpret the first two PCs extracted (what variation pattern each PC represents?)
+
+```{r}
+
+```
+

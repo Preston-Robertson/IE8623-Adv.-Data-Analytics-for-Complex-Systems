@@ -1,0 +1,431 @@
+---
+title: "Homework 1"
+author: "Preston Robertson"
+date: "Setember 24 2021"
+output:
+  
+  word_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+
+#### 1. Fit a linear regression model using Sepal.Length as response and Sepal.Width as predictor
+#### 1.A Fit the regression model
+```{r message=FALSE}
+library(datasets)
+data(iris)
+
+lmfit.Sepal<-lm(formula=Sepal.Length ~ Sepal.Width, data=iris)
+summary(lmfit.Sepal)
+```
+
+
+#### 1.A.B Plot the data with the fitted regression line
+```{r}
+par(mfcol=c(1,1))
+plot(iris$Sepal.Width, iris$Sepal.Length)
+abline(lmfit.Sepal)
+```
+
+
+#### 1.B. Based on your answer in 1c, fit a new model (Model 1) using Sepal.Length as response, Sepal.Width and Species as predictors.
+```{r}
+lmfit.Sepal<-lm(formula=Sepal.Length ~ Sepal.Width+Species, data=iris)
+summary(lmfit.Sepal)
+```
+
+
+#### 1.C. Can you come up with another model that have better adj R2 than Model 1
+```{r}
+lmfit.Sepal<-lm(formula=Sepal.Length ~ Sepal.Width+Petal.Width+Petal.Length+Species, data=iris)
+summary(lmfit.Sepal)
+
+# NOTE
+# This is the best rsq that I personally found. I did not include my other attempts because my computer is slow and takes a long time to run this homework file.
+```
+
+
+#### 1.D. Use subset selection method (step) to explore if we can further improve the fit by incorporating more interaction terms? This will be your Model 3.
+```{r}
+#FORWARD
+
+lm.null<-lm(Sepal.Length~ 1, data=iris)
+lm.aic.forward<-step(lm.null,direction="forward",trace=1,scope= ~ Sepal.Width*Species+Petal.Width*Species+Petal.Length*Species+Petal.Width*Petal.Length+Sepal.Width*Petal.Length+Petal.Width*Sepal.Width)
+summary(lm.aic.forward)
+```
+```{r}
+#BACKWARDS
+
+lm.null<-lm(Sepal.Length~ 1, data=iris)
+lm.aic.backward<-step(lm.null,direction="backward",trace=1,scope= ~ Sepal.Width*Species+Petal.Width*Species+Petal.Length*Species+Petal.Width*Petal.Length+Sepal.Width*Petal.Length+Petal.Width*Sepal.Width)
+summary(lm.aic.backward)
+```
+```{r}
+#BOTH
+
+lm.null<-lm(Sepal.Length~ 1, data=iris)
+lm.aic.both<-step(lm.null,direction="both",trace=1,scope= ~ Sepal.Width*Species+Petal.Width*Species+Petal.Length*Species+Petal.Width*Petal.Length+Sepal.Width*Petal.Length+Petal.Width*Sepal.Width)
+summary(lm.aic.both)
+
+#RESULTS
+#Running the data with the maximum amount of interactions increases the RSQ and decreases the RSE of the model increasing the accuracy of the forward/backward step method. This makes sense since the model has more interactions to test.
+```
+
+
+
+
+#### Question 2: Car Data
+#### Cars data set: Elastic Net
+```{r}
+# Load libraries, get data & set seed for reproducibility ---------------------
+set.seed(123)   
+library(glmnet)  
+library(dplyr)  
+library(psych)   
+
+data("mtcars")
+
+y <- mtcars %>% select(mpg) %>% scale(center = TRUE, scale = FALSE) %>% as.matrix()
+X <- mtcars %>% select(-mpg) %>% as.matrix()
+```
+
+
+#### 2.A Use the same data set we used in class in Lab 3. Explore how the performance of an Elastic net model varies w.r.t,Different lambda, Different alpha
+```{r}
+#Changing Lamda
+
+alpha <- 1 
+lambda <- .25
+base_model_cv <- glmnet(X, y, alpha = 1 , lambda = .25, standardize = TRUE)
+base_y_hat_cv <- predict(base_model_cv, X)
+base_ssr_cv <- t(y - base_y_hat_cv) %*% (y - base_y_hat_cv)
+base_rsq_cv <- cor(y, base_y_hat_cv)^2
+
+sprintf('Alpha = %f', alpha)
+sprintf('Lambda = %f', lambda)
+sprintf('RSQ = %f', base_rsq_cv)
+sprintf('SSR = %f', base_ssr_cv)
+```
+```{r}
+#Changing Lamda
+
+alpha <- 1 
+lambda <- .75
+base_model_cv <- glmnet(X, y, alpha = 1 , lambda = .75, standardize = TRUE)
+base_y_hat_cv <- predict(base_model_cv, X)
+base_ssr_cv <- t(y - base_y_hat_cv) %*% (y - base_y_hat_cv)
+base_rsq_cv <- cor(y, base_y_hat_cv)^2
+
+sprintf('Alpha = %f', alpha)
+sprintf('Lambda = %f', lambda)
+sprintf('RSQ = %f', base_rsq_cv)
+sprintf('SSR = %f', base_ssr_cv)
+
+#Results as Lambda increases the RSQ decreases but SSR increases.
+```
+```{r}
+#Changing Alpha
+
+alpha <- .5
+lambda <- .75
+base_model_cv <- glmnet(X, y, alpha = .5 , lambda = .75, standardize = TRUE)
+base_y_hat_cv <- predict(base_model_cv, X)
+base_ssr_cv <- t(y - base_y_hat_cv) %*% (y - base_y_hat_cv)
+base_rsq_cv <- cor(y, base_y_hat_cv)^2
+
+sprintf('Alpha = %f', alpha)
+sprintf('Lambda = %f', lambda)
+sprintf('RSQ = %f', base_rsq_cv)
+sprintf('SSR = %f', base_ssr_cv)
+```
+```{r}
+#Changing Alpha
+
+alpha <- 0 
+lambda <- .75
+base_model_cv <- glmnet(X, y, alpha = 0, lambda = .75, standardize = TRUE)
+base_y_hat_cv <- predict(base_model_cv, X)
+base_ssr_cv <- t(y - base_y_hat_cv) %*% (y - base_y_hat_cv)
+base_rsq_cv <- cor(y, base_y_hat_cv)^2
+
+sprintf('Alpha = %f', alpha)
+sprintf('Lambda = %f', lambda)
+sprintf('RSQ = %f', base_rsq_cv)
+sprintf('SSR = %f', base_ssr_cv)
+
+#RESULTS
+#If alpha increases then RSQ decreases and the SSR increases.
+```
+
+
+#### 2.B Based on your results in 1, can you find a better model than ridge and the LASSO? What is the evaluation criteria you use?
+```{r}
+# Ridge Regression
+lambdas_to_try <- 10^seq(-3, 5, length.out = 100)
+ridge_cv <- cv.glmnet(X, y, alpha = 0, lambda = lambdas_to_try,
+                      standardize = TRUE, nfolds = 10)
+
+lambda_cv <- ridge_cv$lambda.min
+
+model_cv <- glmnet(X, y, alpha = 0, lambda = lambda_cv, standardize = TRUE)
+y_hat_cv <- predict(model_cv, X)
+ssr_cv <- t(y - y_hat_cv) %*% (y - y_hat_cv)
+rsq_ridge_cv <- cor(y, y_hat_cv)^2
+
+
+
+```
+```{r}
+
+
+# Ridge Regression + AIC/BIC -----------------------------------
+X_scaled <- scale(X)
+aic <- c()
+bic <- c()
+for (i in seq(lambdas_to_try)) {
+  model <- glmnet(X, y, alpha = 0, lambda = lambdas_to_try[i], standardize = TRUE)
+  betas <- as.vector((as.matrix(coef(model))[-1, ]))
+  resid <- y - (X_scaled %*% betas)
+  ld <- lambdas_to_try[i] * diag(ncol(X_scaled))
+  H <- X_scaled %*% solve(t(X_scaled) %*% X_scaled + ld) %*% t(X_scaled)
+  df <- tr(H)
+  aic[i] <- nrow(X_scaled) * log(t(resid) %*% resid) + 2 * df
+  bic[i] <- nrow(X_scaled) * log(t(resid) %*% resid) + 2 * df * log(nrow(X_scaled))
+}
+
+
+lambda_aic <- lambdas_to_try[which.min(aic)]
+lambda_bic <- lambdas_to_try[which.min(bic)]
+
+model_aic <- glmnet(X, y, alpha = 0, lambda = lambda_aic, standardize = TRUE)
+y_hat_aic <- predict(model_aic, X)
+ssr_aic <- t(y - y_hat_aic) %*% (y - y_hat_aic)
+rsq_ridge_aic <- cor(y, y_hat_aic)^2
+
+model_bic <- glmnet(X, y, alpha = 0, lambda = lambda_bic, standardize = TRUE)
+y_hat_bic <- predict(model_bic, X)
+ssr_bic <- t(y - y_hat_bic) %*% (y - y_hat_bic)
+rsq_ridge_bic <- cor(y, y_hat_bic)^2
+
+
+```
+```{r}
+
+
+# LASSO
+lambdas_to_try <- 10^seq(-3, 5, length.out = 100)
+lasso_cv <- cv.glmnet(X, y, alpha = 1, lambda = lambdas_to_try,
+                      standardize = TRUE, nfolds = 10)
+
+lambda_cv <- lasso_cv$lambda.min
+model_cv <- glmnet(X, y, alpha = 1, lambda = lambda_cv, standardize = TRUE)
+model_cv
+y_hat_cv <- predict(model_cv, X)
+ssr_cv <- t(y - y_hat_cv) %*% (y - y_hat_cv)
+rsq_lasso_cv <- cor(y, y_hat_cv)^2
+
+
+```
+```{r}
+
+
+# Elastic Net
+set.seed(11)
+lambdas_to_try <- 10^seq(-3, 5, length.out = 100)
+alpha_to_try<- seq(0.0, 0.99, length.out = 10)
+df <- data.frame(matrix(ncol=3))
+
+for(i in 1:length(alpha_to_try<1)){
+  a  = alpha_to_try[i]
+  
+  ElasticNet_cv <- cv.glmnet(X, y, alpha = a, lambda = lambdas_to_try,
+                      standardize = TRUE)
+l = ElasticNet_cv$lambda.min
+
+Model_cv <- glmnet(X, y, alpha = a, lambda = 1, standardize = TRUE)
+
+y_hat_cv <- predict(Model_cv, X)
+ssr_cv <- t(y - y_hat_cv) %*% (y - y_hat_cv)
+r = rsq_ElasticNet_cv <- cor(y, y_hat_cv)^2
+
+d = c(a,l,rsq_ElasticNet_cv)
+df <- rbind(df,d)}
+
+sprintf('Alpha = %f', a)
+sprintf('Lambda = %f', lambda_cv)
+sprintf('RSQ = %f', rsq_ElasticNet_cv)
+sprintf('SSR = %f', ssr_cv)
+print(df)
+
+#RESULTS
+#Based on these results, we can see that an Alpha = 0 and Lambda = 2.47 will yield the best RSQ.Which means that our model works best with a Ridge Regression.
+```
+```{r}
+
+
+rsq <- cbind("R-squared" = c(rsq_ridge_cv, rsq_ridge_aic, rsq_ridge_bic,  rsq_lasso_cv, rsq_ElasticNet_cv))
+rownames(rsq) <- c("ridge cross-validated", "ridge AIC", "ridge BIC",  "lasso cross_validated", "ElasticNet_CV")
+print(rsq)
+
+#RESULTS
+#Based on these results the best model from the selected is Elastic Net. Which is better than Ridge and LASSO individually.
+```
+
+
+
+
+#### Q3: Cars data set: PCR and PLS
+#### Use the cars data set, and use “mpg” as the response variables. Use 75% of the samples to train and validation the data, and leave 25% of the samples for testing.
+```{r}
+library(tidyverse)
+library(caret)
+library(pls)
+data("Boston", package = "MASS")
+```
+
+
+#### 3.1 Apply the PCR and PLS, respectively. What is the best number of components extracted for PCR and PLS, respectively?
+```{r}
+set.seed(123)
+training.samples <- mtcars$mpg %>%
+  createDataPartition(p = 0.75, list = FALSE)
+train.data  <- mtcars[training.samples, ]
+test.data <- mtcars[-training.samples, ]
+
+
+pcr_model  <- train(
+  mpg~., data = train.data, method = "pcr",
+  scale = TRUE,
+  trControl = trainControl("cv", number = 10),
+  tuneLength = 10
+  )
+plot(pcr_model)
+
+pcr_model$bestTune
+
+summary(pcr_model$finalModel)
+
+predictions <- pcr_model %>% predict(test.data)
+
+data.frame(
+  RMSE = caret::RMSE(predictions, test.data$mpg),
+  Rsquare = caret::R2(predictions, test.data$mpg)
+)
+
+
+```
+
+
+#### 3.2 Compare the RMSE of the two methods based on the test data set. Which one is better?
+```{r}
+set.seed(123)
+
+
+pls_model <- train(
+  mpg~., data = train.data, method = "pls",
+  scale = TRUE,
+  trControl = trainControl("cv", number = 10),
+  tuneLength = 10
+  )
+
+plot(pls_model)
+
+
+pls_model$bestTune
+
+
+summary(pls_model$finalModel)
+
+predictions <- pls_model %>% predict(test.data)
+
+data.frame(
+  RMSE = caret::RMSE(predictions, test.data$mpg),
+  Rsquare = caret::R2(predictions, test.data$mpg)
+)
+
+#RESULTS
+#Comparing the two models shows that PLS is better for this data set since it has a lower RMSE and higher RSQ.
+```
+
+
+
+
+#### Q4: So far, you have performed multiple model fitting in Q1~Q3, and used different model assessment/selection methods to evaluate different models.
+
+#### Based on what we covered in the lecture of Week 5, please summarize the model assessment tools (i.e. which type of error) you used in solving each question of Q1~Q3.
+```{r}
+#### Question 1 Models ####
+
+
+### Models
+
+## Linear Regression
+# Linear Regression is a predictive analysis tool using dependent and independent variables but strictly graphing and predicting y values through linear patterns only. This means y = mx + b is the basis of the model.
+
+# RSQ, for my model I used R squared which is the measure of variation when using the dependent variable to predict the independent variable. R squared is a percentage, so the closer the R squared is to 1 then the lower the variation meaning the better model. 
+
+
+# Multiple Linear Regression
+# Multiple Linear Regression is the same as linear regression but uses explanatory variables to allow for a better prediction of the model. This splits the data, like in question two when we split the data based on species. 
+# RSQ and adjRSQ, We already discussed R squared, so I am going to explain what adjusted R squared is. Adjusted R squared is the same value as R squared but punishes data sets that are too complicated since the base R squared slowly gets better as you add variables to the model.
+
+# Forward and Backward Step-wise Selection
+# Step-wise regression is a model that changes the amount of variables in the model to optimize the amount of variables for accuracy and simplicity. A forward step-wise model starts off with an empty model and adds variables and backwards is the opposite.
+# RSQ and RSE, For this model I used RSE and RSQ to determine the best model (also the model's AIC score). RSE is residual standard error and as the name implies, we would like to decrease error in the model so the closer the number is to zero the better.
+
+```
+
+
+```{r}
+#### Question 2 Models ####
+
+
+### Models
+
+## Ridge Regression
+# Ridge regression is a type of variable selection for a model allowing the "shrinking" of variables. This changes the weight of variables in the model allowing for more accurate results.
+# RSQ and SSR, SSR is also known as the residual sum of squares. This shows the error in the model, with the smaller the number the tighter the fit the model has on the data (not between 0 and 1). This is difficult to use by itself since the SSR can be extremely low but the model be too tight to accurately predict future data.
+
+# LASSO
+# The LASSO is very similar to Ridge Regression and accomplishes the same thing; however, LASSO can set variables equal to zero rather than just shrinking the variables.
+# RSQ and SSR, explained above.
+
+# Elastic Net
+# Elastic Net is an in between Ridge Regression and LASSO and can be changed to be more like one model rather than the other variable selection model.
+# RSQ and SSR
+
+
+### Validation Criteria
+## AIC/BIC
+# AIC and BIC both accomplish the same task, checking the "goodness" of the fit while also punishing models that are too complicated. BIC does a better (more harsh) job for punishing over complex models.
+## Cross-Validation
+# Cross-Validation is using the training data to both train and test the data. You split the data into k subgroups and can make a model from each subgroup k and test the models on each other subgroup. This is very good way to make a model with the amount of data is limited.
+
+```
+
+
+```{r}
+#### Question 3 Models ####
+
+
+### Models
+
+## PCR
+# Principle Component Analysis is using hyper planes to find principle components to shrink the amount and weight of variables. PCR typically ends up reducing the dimensions of the model.This model relies on variance to check the components.
+# RMSE and RSQ, Residual Mean Square Error is a very common measure of differences in models. The lower the RMSE the better the fit the model has. This can also be referred to as the "cost" function when minimizing.
+
+# PLS
+# Rather than looking at variance, Partial Least Square Regression rather uses the observable variables (x) and predicted variables (y) to form several individual linear regression models. This model then tries to find the multidimensional direction of x (2D) to with the highest variance in y. 
+# RMSE and RSQ, explained above. 
+
+
+
+
+```
+
+
+
+
+
+
