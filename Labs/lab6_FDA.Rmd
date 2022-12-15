@@ -1,0 +1,204 @@
+---
+title: "Lab 6"
+author: "Wenmeng Tian"
+date: "October 28, 2019"
+output: pdf_document
+---
+
+```{r}
+library(refund)
+data(DTI); attach(DTI)
+names(DTI)
+head(ID)
+head(case)
+head(visit)
+DTI.complete <- subset(DTI, complete.cases(DTI))
+DTI.baseline <- subset(DTI.complete, visit == 1 & case == 1)
+tract <- 1:93
+n <- length(unique(DTI.baseline$ID))
+dim(DTI.baseline$cca)
+```
+
+```{r}
+matplot(tract, t(DTI.baseline$cca), 
+        type='l', lty=1, col=rainbow(n),
+        main = "Diffusion Tensor Imaging : CCA",
+        xlab="tract", ylab="Fractional anisotropy (FA)")
+```
+```{r}
+set.seed(245)
+n.crv <- 5
+sel.crv <- sample(1:n, size=n.crv, replace = FALSE)
+
+matplot(tract, t(DTI.baseline$cca), 
+        type='l', lty=1, col="light grey",
+        main = "Diffusion Tensor Imaging : CCA",
+        xlab="tract", ylab="Fractional anisotropy (FA)")
+
+matlines(tract, t(DTI.baseline$cca[sel.crv,]), 
+        type='l', lty=1, col=rainbow(n)[sel.crv])
+```
+
+```{r}
+matplot(tract, t(DTI.baseline$cca), type='l', lty=1, col='lightgrey',
+        main = "Diffusion Tensor Imaging : CCA",
+        xlab="tract", ylab="Fractional anisotropy (FA)")
+sampleMean <- colMeans(DTI.baseline$cca)
+lines(tract, sampleMean, lty=2, lwd=2, col='red')
+```
+```{r}
+library(fields)
+sampleCov <- cov(DTI.baseline$cca)
+image.plot(tract, tract, sampleCov, main='sample covariance of FA')
+```
+```{r}
+sampleCor <- cor(DTI.baseline$cca)
+image.plot(tract, tract, sampleCor, main='sample correlation of FA')
+```
+```{r}
+install.packages("fda")
+library(fda)                  # load package
+data("CanadianWeather")       # load data
+attach(CanadianWeather)       # attach data
+?CanadianWeather
+names(CanadianWeather)
+```
+
+```{r}
+month <- 1:12
+dim(CanadianWeather$monthlyTemp)
+```
+```{r}
+n <- ncol(CanadianWeather$monthlyTemp)
+n
+```
+```{r}
+matplot(month, CanadianWeather$monthlyTemp,
+        type='l', lty=1, col = rainbow(n),
+        xlab="months", ylab="temperature", 
+        main="monthly temperatures")
+```
+```{r}
+matplot(month, CanadianWeather$monthlyTemp,
+        type='l', lty=1, col = "light grey",
+        xlab="months", ylab="temperature", 
+        main="monthly temperatures")
+
+set.seed(18202)
+n.crv <- 5
+sel.crv <- sample(1:n, size=n.crv, replace = FALSE)
+
+matlines(month, CanadianWeather$monthlyTemp[,sel.crv], 
+        type='l', lty=1, col = rainbow(n)[sel.crv])
+```
+
+
+```{r}
+day <- 1:365  # define functional argument
+matplot(day, CanadianWeather$dailyAv[,,1], 
+        type='l', lty=1, col = rainbow(n),
+        xlab="days", ylab="temperature", 
+        main="daily temperatures")
+```
+
+```{r}
+library(fda)
+data(CanadianWeather)
+attach(CanadianWeather)
+
+y.precip=dailyAv[,,2]
+l = which(place=="Vancouver") 
+t.day = 1:365  
+y=y.precip[,l]
+
+# define domain, #knots, and #order to construct b-spline basis
+
+ybasis  <- create.bspline.basis(rangeval = c(1,365), nbasis = 365, norder=4)
+
+bvals = eval.basis(t.day, ybasis)
+Xbasis =bvals; 
+lm.fit = lm(y ~ 0 + Xbasis)   
+y.fit = lm.fit$fitted.values
+
+plot(t.day, y, type="n",lwd=4, col="black",
+     xlab="day", ylab="precipitation", 
+     main=paste(365, "Fourier fns"), cex=1)
+points(t.day, y, pch=1, cex=.5, col="blue", lwd=1)
+lines(t.day, lm.fit$fitted.values, lwd=1, col="red")
+```
+```{r}
+lambda <- 10^4
+
+# int2Lfd(m)  : use this to define the m-th order derivative penalty term
+# fdPar() : defines functional parameters; in this case the 2nd order derivative penalty term and the smoothing parameter.
+
+# ybasis  <- create.bspline.basis(rangeval = c(1,365), nbasis = 365, norder=4)
+tD2fdPar = fdPar(ybasis, Lfdobj=int2Lfd(2), lambda=lambda)
+
+# smooth.basis() : smoothes the data using the roughness penalty and smoothing parameter specified in 'tD2fdPar' 
+tyfd = smooth.basis(t.day,y,tD2fdPar) 
+
+#names(tyfd)
+#[1] "fd"      "df"      "gcv"     "beta"    "SSE"     "penmat"  "y2cMap"     
+#    "argvals" "y"    
+
+# fd   a functional data object containing a smooth of the data.
+# df     a degrees of freedom measure of the smooth
+# gcv  the value of the generalized cross-validation or GCV criterion. 
+# beta the regression coefficients associated with covariate variables. 
+# SSE    the error sums of squares. 
+# penmat:the penalty matrix.
+# y2cMap     the matrix mapping the data to the coefficients: 
+#          (Phi^T Phi + R)^(-1) \Phi^T
+
+main.label = paste("Vancouver (lambda =", round(lambda,2), ")", sep="")
+plot(t.day, y, type="n", ylim=range(y), 
+     ylab="Precipitation", xlab="day", main=main.label)
+points(t.day, y, pch=1, cex=.5, col="blue", lwd=1)
+lines(tyfd$fd,col="red",lwd=4)
+```
+
+```{r}
+logl=seq(-5, 12, len=71)  
+range(exp(logl))
+gcv = rep(0,71)
+
+for(i in c(1:length(logl))){
+  lambda=exp(logl[i])
+  
+  tD2fdPar = fdPar(ybasis,Lfdobj=int2Lfd(2),lambda=lambda)
+  tyfd = smooth.basis(t.day,y,tD2fdPar)
+  
+  gcv[i] = tyfd$gcv
+}
+
+# PLOT GCV of FIT versus log lambda
+plot(logl,gcv[1:71],type='l',cex.lab=1.5, lwd=4, 
+     xlab='log lambda',ylab='GCV', main="GCV(log.lambda)")
+```
+
+```{r}
+index.logl.opt = which(gcv==min(gcv))
+lambda.opt = exp(logl[index.logl.opt])
+tD2fdPar = fdPar(ybasis,Lfdobj=int2Lfd(2),lambda=lambda.opt)
+tyfd = smooth.basis(t.day,y,tD2fdPar)
+
+plot(t.day, y, type="n", ylab="Precipitation", xlab="day", ylim=range(y), 
+     main=paste("optimal lambda = ", round(lambda.opt)))
+points(t.day, y, pch=1, cex=.5, col="blue", lwd=1)
+lines(tyfd$fd,col="red",lwd=4)
+```
+
+```{r}
+# kernel regression
+l = which(place=="Vancouver") 
+t.day = 1:365  
+y=y.precip[,l]
+fit = ksmooth(t.day, y, kernel = c("normal"), bandwidth = 30)
+  plot(t.day, y, type="n", ylab="Precipitation", 
+       xlab="day", ylim=range(y), 
+       main="using gam function (REML)")
+  points(t.day, y, pch=1, cex=.5, col="blue", lwd=1)
+  lines(t.day, fit$y, col="red", lwd=2)
+```
+

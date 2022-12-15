@@ -1,0 +1,96 @@
+---
+title: "Homework 1"
+author: "Preston Robertson"
+date: "TBD"
+output:
+  
+  word_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+## Regression Example
+
+In this code, we demonstrate how to fit linear regression models using R. 
+
+### Load data from library "datasets"
+```{r message=FALSE}
+library(datasets)
+data(iris)
+summary(iris)
+head(iris)
+```
+
+
+### Visualize the data using pairwise scatter plots
+```{r}
+pairs(iris[1:4], main = "Iris Data", pch = 21, bg = c("red", "green3", "blue")[unclass(iris$Species)])
+```
+
+### 1. Fit a linear regression model using Sepal.Length as response and Sepal.Width as predictor
+#### 1.B Fit the regression model
+```{r}
+lmfit.Sepal<-lm(formula=Sepal.Length ~ Sepal.Width, data=iris)
+summary(lmfit.Sepal)
+```
+
+
+#### 1.C plot the data with the fitted regression line
+```{r}
+par(mfcol=c(1,1))
+plot(iris$Sepal.Width, iris$Sepal.Length)
+abline(lmfit.Sepal)
+```
+#### 2.A Based on your answer in 1c, fit a new model (Model 1) using Sepal.Length as response, Sepal.Width and Species as predictors.
+```{r}
+lmfit.Sepal<-lm(formula=Sepal.Length ~ Sepal.Width+Species, data=iris)
+summary(lmfit.Sepal)
+```
+#### 3.A	Can you come up with another model that have better adj R2 than Model 1
+```{r}
+lmfit.Sepal<-lm(formula=Sepal.Length ~ Sepal.Width+Petal.Width+Petal.Length+Species, data=iris)
+summary(lmfit.Sepal)
+```
+
+#### 3.3 Confidence interval of the parameters
+```{r}
+confint(lmfit.pedal,level=0.95)
+```
+#### 3.4 Residual plots
+```{r}
+par(mfcol=c(2,2))
+
+# # cook's distance
+# library(faraway)
+# cook<-cooks.distance(lmfit.pedal) # check for influential points
+# halfnorm(cook,3,ylab="Cooks dist")
+# boxplot(cook)
+
+# constant var
+plot(fitted(lmfit.pedal),residuals(lmfit.pedal),xlab="Fitted",ylab="Residuals")
+abline(h=0)
+
+plot(fitted(lmfit.pedal),abs(residuals(lmfit.pedal)),xlab="Fitted",ylab="|Residuals|" )
+
+# Normality
+qqnorm(residuals(lmfit.pedal),ylab="Residuals")
+qqline(residuals(lmfit.pedal))
+hist(residuals(lmfit.pedal))
+
+```
+
+#### 3.5 Statistical tests
+```{r message=FALSE}
+library(lmtest)
+library(lawstat)
+library(nortest)
+
+runs.test(residuals(lmfit.pedal))      # Runs test: test for randomness
+dwtest(lmfit.pedal)                    # Durbin Watson test: test for independence (any autocorrelation?)
+bptest(lmfit.pedal)                    # BP test: test for constant variance
+
+
+ad.test(residuals(lmfit.pedal))         # Anderson-Darling test (normality)
+shapiro.test(residuals(lmfit.pedal))    # Shapiro-Wilks test (normality)
+```
+

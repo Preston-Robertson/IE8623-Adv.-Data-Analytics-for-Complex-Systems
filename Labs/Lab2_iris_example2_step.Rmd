@@ -1,0 +1,28 @@
+---
+title: "Week 1 Regression Examples - Iris Data"
+author: "Wenmeng Tian"
+date: "September 12, 2019"
+output:
+  word_document: default
+  pdf_document: default
+  html_notebook: default
+  
+---
+
+## Regression Example
+
+In this code, we demonstrate how to perform subset selection using R. 
+
+```{r}
+lm.null<-lm(Petal.Length~ 1, data=iris)
+lm.aic.forward<-step(lm.null,direction="forward",trace=1,scope= ~ Petal.Width*Species+Sepal.Width*Species+Sepal.Length*Species)
+summary(lm.aic.forward)
+```
+
+
+```{r}
+lm.full<-lm(Petal.Length~Petal.Width*Species+Sepal.Width*Species+Sepal.Length*Species,data=iris)
+lm.aic.backward<-step(lm.full,direction="backward",trace=1)
+summary(lm.aic.backward)
+```
+

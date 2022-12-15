@@ -1,0 +1,110 @@
+---
+title: "Lab 4_SVM"
+author: "Wenmeng Tian"
+date: "October 7, 2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## 1 Linear SVM classification Example
+
+In this code, we demonstrate how to fit SVM models using R. 
+
+### 1.1 Generate random data 
+
+```{r}
+set.seed(10111)
+x = matrix(rnorm(80), 40, 2)
+y = rep(c(-1, 1), c(20, 20))
+x[y == 1,] = x[y == 1,] + 1
+plot(x, col = y + 3, pch = 19)
+
+set.seed(123)
+xt = matrix(rnorm(80), 40, 2)
+yt = rep(c(-1, 1), c(20, 20))
+xt[yt == 1,] = xt[yt == 1,] + 1
+```
+
+
+```{r}
+library(e1071)
+library(caret)
+library(dplyr)
+library(tidyverse)
+dat = data.frame(x, y = as.factor(y))
+dat.test=data.frame(xt, y = as.factor(yt))
+
+svmfit = svm(y ~ ., data = dat, kernel = "linear", cost = 1000, scale = FALSE)
+print(svmfit)
+dat.test.svm<-predict(svmfit,data=dat.test)
+ConfusionM.svm<-confusionMatrix(dat.test.svm,dat.test$y)
+print(ConfusionM.svm)
+```
+
+```{r}
+make.grid = function(x, n = 100) {
+  grange = apply(x, 2, range)
+  x1 = seq(from = grange[1,1], to = grange[2,1], length = n)
+  x2 = seq(from = grange[1,2], to = grange[2,2], length = n)
+  expand.grid(X1 = x1, X2 = x2)
+}
+xgrid = make.grid(x)
+# xgrid[1:10,]
+ygrid = predict(svmfit, xgrid)
+plot(xgrid, col = c("red","blue")[as.numeric(ygrid)], pch = 20, cex = .2)
+points(x, col = y + 3, pch = 19)
+points(x[svmfit$index,], pch = 5, cex = 2)
+```
+```{r}
+beta = drop(t(svmfit$coefs)%*%x[svmfit$index,])
+beta0 = svmfit$rho
+plot(xgrid, col = c("red", "blue")[as.numeric(ygrid)], pch = 20, cex = .2)
+points(x, col = y + 3, pch = 19)
+points(x[svmfit$index,], pch = 5, cex = 2)
+abline(beta0 / beta[2], -beta[1] / beta[2])
+abline((beta0 - 1) / beta[2], -beta[1] / beta[2], lty = 2)
+abline((beta0 + 1) / beta[2], -beta[1] / beta[2], lty = 2)
+```
+
+### Naive Bayes Classifier Demonstration
+```{r}
+NBclassfier=naiveBayes(y~., data=dat)
+print(NBclassfier)
+dat.test.NB=predict(NBclassfier, newdata = dat.test, type = "class")
+confusionM.svm<-confusionMatrix(dat.test.NB,dat.test$y)
+print(confusionM.svm)
+```
+
+```{r}
+load(file = "ESL.mixture.rda")
+names(ESL.mixture)
+rm(x, y)
+attach(ESL.mixture)
+plot(x, col = y + 1)
+```
+
+```{r}
+dat = data.frame(y = factor(y), x)
+fit = svm(factor(y) ~ ., data = dat, scale = FALSE, kernel = "radial", cost = 100)
+xgrid = expand.grid(X1 = px1, X2 = px2)
+ygrid = predict(fit, xgrid)
+
+plot(xgrid, col = as.numeric(ygrid), pch = 20, cex = .2)
+points(x, col = y + 1, pch = 19)
+```
+```{r}
+func = predict(fit, xgrid, decision.values = TRUE)
+func = attributes(func)$decision
+
+xgrid = expand.grid(X1 = px1, X2 = px2)
+ygrid = predict(fit, xgrid)
+plot(xgrid, col = as.numeric(ygrid), pch = 20, cex = .2)
+points(x, col = y + 1, pch = 19)
+
+contour(px1, px2, matrix(func, 69, 99), level = 0, add = TRUE)
+contour(px1, px2, matrix(prob, 69, 99), level = 0.5, add = TRUE, col = "blue", lwd = 2)
+
+```
+

@@ -1,0 +1,86 @@
+---
+title: "PCR and PLS"
+output: pdf_document
+---
+
+```{r}
+library(tidyverse)
+library(caret)
+library(pls)
+data("Boston", package = "MASS")
+
+# Split the data into training and test set
+set.seed(123)
+training.samples <- Boston$medv %>%
+  createDataPartition(p = 0.8, list = FALSE)
+train.data  <- Boston[training.samples, ]
+test.data <- Boston[-training.samples, ]
+
+
+pcr_model  <- train(
+  medv~., data = train.data, method = "pcr",
+  scale = TRUE,
+  trControl = trainControl("cv", number = 10),
+  tuneLength = 10
+  )
+# Plot model RMSE vs different values of components
+plot(pcr_model)
+
+# Print the best tuning parameter ncomp that
+# minimize the cross-validation error, RMSE
+pcr_model$bestTune
+
+# Summarize the final model
+summary(pcr_model$finalModel)
+
+# Make predictions based on test data
+predictions <- pcr_model %>% predict(test.data)
+# Model performance metrics
+data.frame(
+  RMSE = caret::RMSE(predictions, test.data$medv),
+  Rsquare = caret::R2(predictions, test.data$medv)
+)
+
+```
+
+```{r}
+# Build the PLS model on training set
+set.seed(123)
+
+
+pls_model <- train(
+  medv~., data = train.data, method = "pls",
+  scale = TRUE,
+  trControl = trainControl("cv", number = 10),
+  tuneLength = 10
+  )
+# Plot model RMSE vs different values of components
+plot(pls_model)
+
+# Print the best tuning parameter ncomp that
+# minimize the cross-validation error, RMSE
+pls_model$bestTune
+
+# Summarize the final model
+summary(pls_model$finalModel)
+
+# Make predictions
+predictions <- pls_model %>% predict(test.data)
+# Model performance metrics
+data.frame(
+  RMSE = caret::RMSE(predictions, test.data$medv),
+  Rsquare = caret::R2(predictions, test.data$medv)
+)
+```
+```{r}
+lmfit<-lm(formula=medv ~ ., data=train.data)
+summary(lmfit)
+
+predictions_lm<-predict(lmfit,test.data)
+# Model performance metrics
+data.frame(
+  RMSE = caret::RMSE(predictions_lm, test.data$medv),
+  Rsquare = caret::R2(predictions_lm, test.data$medv)
+)
+```
+

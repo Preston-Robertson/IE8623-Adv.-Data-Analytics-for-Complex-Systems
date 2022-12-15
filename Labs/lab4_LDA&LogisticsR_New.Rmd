@@ -1,0 +1,128 @@
+---
+title: "iris_example3_classification"
+author: "Wenmeng Tian"
+date: "September 30, 2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## classification Example
+
+In this code, we demonstrate how to fit linear discriminant analysis and logistic regression models using R. 
+
+
+### 1. Load data from library "datasets"
+```{r message=FALSE}
+library(datasets)
+library(ggplot2)
+data(iris)
+summary(iris)
+```
+
+### 2. Visualize the data using pairwise scatter plots
+```{r}
+pairs(iris[1:4], main = "Iris Data", pch = 21, bg = c("red", "green3", "blue")[unclass(iris$Species)])
+```
+
+### 3. Fit a linear discriminant analysis model to predict iris species
+#### 3.1 Split the data into training and testing set, and use training set to fit the LDA model
+```{r}
+library(MASS)
+library(dplyr)
+library(tidyverse)
+library(caret)
+library(e1071)
+# Split the data into training and test set
+set.seed(123)
+training.samples <- iris$Species %>%
+  createDataPartition(p = 0.8, list = FALSE)
+train.data  <- iris[training.samples, ]
+test.data <- iris[-training.samples, ]
+
+# try to use functions in ggplot2 to visualize data distribution
+density2 <- ggplot(data=iris, aes(x=Sepal.Width, fill=Species))
+density2 + geom_density(stat="density", alpha=I(0.2)) +
+  xlab("Sepal Width") +  ylab("Density") + ggtitle("Histogram & Density Curve of Sepal Width")
+
+```
+```{r}
+# fit lda model
+model.lda<- lda(Species~.,data=train.data)
+print(model.lda)
+
+```
+
+#### 3.2 Use the testing set to evaluate the classification performance
+```{r}
+predictions.lda = data.frame(predict(model.lda, test.data))
+confusionM.lda<-confusionMatrix(predictions.lda$class,test.data$Species)
+#print(confusionM.lda$table)
+print(confusionM.lda)
+```
+
+#### 3.3 Fit a QDA model and use testing set to evaluate classification performance
+```{r}
+model.qda<- qda(Species~.,data=train.data)
+print(model.qda)
+predictions.qda = data.frame(predict(model.qda, test.data))
+confusionM.qda<-confusionMatrix(predictions.qda$class,test.data$Species)
+print(confusionM.qda$table)
+```
+#### 3.4 Regularized discriminant analysis
+```{r}
+library(klaR)
+cv_5_grid = trainControl(method = "cv", number = 5)
+fit_rda_grid = train(Species ~ ., data = train.data, method = "rda", trControl = cv_5_grid)
+
+fit_rda_grid
+plot(fit_rda_grid)
+```
+
+### 4. Fit a logistic regression model to predict iris species
+#### 4.1 Use the same training set in 3.1 to fit a logistic regression model
+```{r}
+library(nnet)
+# Fit the model
+model.logReg <- nnet::multinom(Species ~., data = train.data)
+# Summarize the model
+summary(model.logReg)
+# Make predictions
+predicted.logReg <- model.logReg %>% predict(test.data)
+head(predicted.logReg)
+# Model accuracy
+mean(predicted.logReg == test.data$Species)
+
+confusionM.logReg<-confusionMatrix(predicted.logReg, test.data$Species)
+```
+#### 4.2 Regularized logistic regression model
+
+```{r}
+library(glmnet)
+library(fastDummies)
+x<-train.data[,1:4] %>% as.matrix()
+y<-train.data[,5] %>% as.matrix()
+
+y_dummy<-dummy_columns(y)
+colnames(y_dummy)[colnames(y_dummy) == "V1_setosa"] <- "setosa"
+colnames(y_dummy)[colnames(y_dummy) == "V1_versicolor"] <- "versicolor"
+colnames(y_dummy)[colnames(y_dummy) == "V1_virginica"] <- "virginica"
+
+
+y_dummy1<-y_dummy[,2:4] %>% as.matrix()
+
+# Perform 10-fold cross-validation to select lambda ---------------------------
+lambdas_to_try <- 10^seq(-3, 3, length.out = 100)
+# Setting alpha = 1 implements lasso regression
+lasso_cv <- cv.glmnet(x, y_dummy1, family="multinomial", alpha =1, lambda = lambdas_to_try,
+                      standardize = TRUE, nfolds = 10)
+plot(lasso_cv)
+lasso_model<-glmnet(x, y_dummy1, family="multinomial", alpha = 1,  lambda=lasso_cv$lambda.min, standardize = TRUE)
+test_class_hat<-as.factor(predict(lasso_model, newx = as.matrix(test.data[,1:4]),type="class"))
+
+print(confusionMatrix(test_class_hat,test.data$Species)$table)
+
+```
+
+
