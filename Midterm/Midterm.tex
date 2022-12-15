@@ -1,0 +1,1624 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Midterm},
+  pdfauthor={Preston Robertson},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Midterm}
+\author{Preston Robertson}
+\date{October 17, 2021}
+
+\begin{document}
+\maketitle
+
+\hypertarget{libraries}{%
+\paragraph{Libraries}\label{libraries}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(glmnet)  }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: Matrix
+\end{verbatim}
+
+\begin{verbatim}
+## Loaded glmnet 4.1-2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)  }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(psych)}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.4     v stringr 1.4.0
+## v tidyr   1.1.3     v forcats 0.5.1
+## v readr   2.0.1
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x ggplot2::%+%()   masks psych::%+%()
+## x ggplot2::alpha() masks psych::alpha()
+## x tidyr::expand()  masks Matrix::expand()
+## x dplyr::filter()  masks stats::filter()
+## x dplyr::lag()     masks stats::lag()
+## x tidyr::pack()    masks Matrix::pack()
+## x tidyr::unpack()  masks Matrix::unpack()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(caret)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'caret'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:purrr':
+## 
+##     lift
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(pls)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'pls'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:caret':
+## 
+##     R2
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:stats':
+## 
+##     loadings
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(e1071)}
+\FunctionTok{library}\NormalTok{(MASS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'MASS'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:dplyr':
+## 
+##     select
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(klaR)}
+\FunctionTok{library}\NormalTok{(nnet)}
+\FunctionTok{library}\NormalTok{(MASS)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{question-1}{%
+\paragraph{Question 1}\label{question-1}}
+
+\hypertarget{loading-data}{%
+\paragraph{Loading Data}\label{loading-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(}\StringTok{"state"}\NormalTok{)}
+\NormalTok{statdata}\OtherTok{\textless{}{-}}\FunctionTok{data.frame}\NormalTok{(state.x77,}\AttributeTok{row.names=}\NormalTok{state.abb)}
+\FunctionTok{summary}\NormalTok{(statdata)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Population        Income       Illiteracy       Life.Exp    
+##  Min.   :  365   Min.   :3098   Min.   :0.500   Min.   :67.96  
+##  1st Qu.: 1080   1st Qu.:3993   1st Qu.:0.625   1st Qu.:70.12  
+##  Median : 2838   Median :4519   Median :0.950   Median :70.67  
+##  Mean   : 4246   Mean   :4436   Mean   :1.170   Mean   :70.88  
+##  3rd Qu.: 4968   3rd Qu.:4814   3rd Qu.:1.575   3rd Qu.:71.89  
+##  Max.   :21198   Max.   :6315   Max.   :2.800   Max.   :73.60  
+##      Murder          HS.Grad          Frost             Area       
+##  Min.   : 1.400   Min.   :37.80   Min.   :  0.00   Min.   :  1049  
+##  1st Qu.: 4.350   1st Qu.:48.05   1st Qu.: 66.25   1st Qu.: 36985  
+##  Median : 6.850   Median :53.25   Median :114.50   Median : 54277  
+##  Mean   : 7.378   Mean   :53.11   Mean   :104.46   Mean   : 70736  
+##  3rd Qu.:10.675   3rd Qu.:59.15   3rd Qu.:139.75   3rd Qu.: 81163  
+##  Max.   :15.100   Max.   :67.30   Max.   :188.00   Max.   :566432
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{statdata[}\DecValTok{24}\NormalTok{, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Population Income Illiteracy Life.Exp Murder HS.Grad Frost  Area
+## MS       2341   3098        2.4    68.09   12.5      41    50 47296
+\end{verbatim}
+
+\#\#\#\#The data were collected from US Bureas of the Census on the 50
+states from the 1970s. Use ``statdata''to perform regressionanalysis.
+More information about the variables are available from the help file of
+R.We will take life expectancy (Life.Exp)as the response and the
+remaining variables as predictors.Use all the rows except for the row of
+MS as our training set, and the row of MS as our testing set.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{training.data }\OtherTok{\textless{}{-}}\NormalTok{ statdata[}\SpecialCharTok{{-}}\DecValTok{24}\NormalTok{, ]}
+\NormalTok{test.data }\OtherTok{\textless{}{-}}\NormalTok{ statdata[}\DecValTok{24}\NormalTok{, ]}
+\NormalTok{test.data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Population Income Illiteracy Life.Exp Murder HS.Grad Frost  Area
+## MS       2341   3098        2.4    68.09   12.5      41    50 47296
+\end{verbatim}
+
+\hypertarget{fit-a-linear-regression-model-using-the-training-set-based-on-all-the-predictors.-interpret-all-the-coefficients-you-estimated.}{%
+\paragraph{Fit a linear regression model using the training set based on
+all the predictors. Interpret all the coefficients you
+estimated.}\label{fit-a-linear-regression-model-using-the-training-set-based-on-all-the-predictors.-interpret-all-the-coefficients-you-estimated.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lmfit.LE}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{Life.Exp }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Population}\SpecialCharTok{+}\NormalTok{Income}\SpecialCharTok{+}\NormalTok{Illiteracy}\SpecialCharTok{+}\NormalTok{Murder}\SpecialCharTok{+}\NormalTok{HS.Grad}\SpecialCharTok{+}\NormalTok{Frost}\SpecialCharTok{+}\NormalTok{Area, }\AttributeTok{data=}\NormalTok{training.data)}
+\FunctionTok{summary}\NormalTok{(lmfit.LE)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Life.Exp ~ Population + Income + Illiteracy + Murder + 
+##     HS.Grad + Frost + Area, data = training.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.53698 -0.53359 -0.00416  0.51884  1.45242 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  7.100e+01  1.729e+00  41.053  < 2e-16 ***
+## Population   5.112e-05  2.887e-05   1.771   0.0841 .  
+## Income      -9.121e-05  2.469e-04  -0.369   0.7137    
+## Illiteracy   1.048e-01  3.659e-01   0.286   0.7760    
+## Murder      -2.981e-01  4.617e-02  -6.457 9.69e-08 ***
+## HS.Grad      5.183e-02  2.316e-02   2.237   0.0308 *  
+## Frost       -5.510e-03  3.113e-03  -1.770   0.0842 .  
+## Area        -1.333e-07  1.651e-06  -0.081   0.9360    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7367 on 41 degrees of freedom
+## Multiple R-squared:  0.7231, Adjusted R-squared:  0.6759 
+## F-statistic:  15.3 on 7 and 41 DF,  p-value: 1.204e-09
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Results}
+\CommentTok{\# Looking at the model,}
+\CommentTok{\# Population: Seems to have both a low effect on the life expectancy (Estimate) and a low standard error (Std. error) this means this coefficient is probably non{-}essential to our model unless interaction terms prove otherwise.}
+\CommentTok{\# Income: Same as population but is very likely to be non{-}essential to our model.}
+\CommentTok{\# Illiteracy: Plays a big role in predicting the LE, and is the best stand alone predicting variable.}
+\CommentTok{\# Murder: Also plays a big role in predicting the LE and is the second best stand alone predicting variable.}
+\CommentTok{\# HS.Grad: Is a good estimator of LE and should be used in the model.}
+\CommentTok{\# Frost: Has some correlation with LE and has high std. Error. Can be used in the model.}
+\CommentTok{\# Area: Is the worst predicting variable for LE and has very high error. Should not be used in the model.}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{what-is-the-r2-value-of-the-model-1.1-how-to-interpret-this-value}{%
+\paragraph{What is the R2 value of the model 1.1? How to interpret this
+value?}\label{what-is-the-r2-value-of-the-model-1.1-how-to-interpret-this-value}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The Rsq from the previous model is .6759. The Rsq is a measure of fit (accuracy of the model) so with a 67\% accuracy our model is in much need of improvement.}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{calculate-the-point-estimate-and-95-confidence-interval-ci-for-the-mean-life-expectancy-for-ms.}{%
+\paragraph{Calculate the point estimate and 95\% confidence interval
+(CI) for the mean life expectancy for
+MS.}\label{calculate-the-point-estimate-and-95-confidence-interval-ci-for-the-mean-life-expectancy-for-ms.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(training.data}\SpecialCharTok{$}\NormalTok{Life.Exp)}
+\NormalTok{xbar }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(training.data}\SpecialCharTok{$}\NormalTok{Life.Exp, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{s }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(training.data}\SpecialCharTok{$}\NormalTok{Life.Exp)}
+
+\NormalTok{margin }\OtherTok{\textless{}{-}} \FunctionTok{qt}\NormalTok{(}\FloatTok{0.975}\NormalTok{,}\AttributeTok{df=}\NormalTok{n}\DecValTok{{-}1}\NormalTok{)}\SpecialCharTok{*}\NormalTok{s}\SpecialCharTok{/}\FunctionTok{sqrt}\NormalTok{(n)}
+
+\NormalTok{low }\OtherTok{\textless{}{-}}\NormalTok{ xbar }\SpecialCharTok{{-}}\NormalTok{ margin}
+\NormalTok{low}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 70.56385
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{high }\OtherTok{\textless{}{-}}\NormalTok{ xbar }\SpecialCharTok{+}\NormalTok{ margin}
+\NormalTok{high}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 71.30717
+\end{verbatim}
+
+\hypertarget{look-atthe-model-in-1.1-list-at-least-three-different-models-that-can-potentially-improve-the-performance.-explain-your-rationality-behind-your-selection-and-train-those-threemodels.-do-they-actually-perform-better-than-the-model-obtained-in-1.1-explain-possible-reasons.}{%
+\paragraph{Look atthe model in 1.1, list at least THREE different models
+that can potentially improve the performance. Explain your rationality
+behind your selection, and train those threemodels. Do they actually
+perform better than the model obtained in 1.1? Explain possible
+reasons.}\label{look-atthe-model-in-1.1-list-at-least-three-different-models-that-can-potentially-improve-the-performance.-explain-your-rationality-behind-your-selection-and-train-those-threemodels.-do-they-actually-perform-better-than-the-model-obtained-in-1.1-explain-possible-reasons.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# This is the base line predictor for the later models}
+
+\NormalTok{predictions }\OtherTok{\textless{}{-}}\NormalTok{ lmfit.LE }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{predict}\NormalTok{(test.data)}
+
+\FunctionTok{print}\NormalTok{(predictions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       MS 
+## 69.20329
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(test.data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Population Income Illiteracy Life.Exp Murder HS.Grad Frost  Area
+## MS       2341   3098        2.4    68.09   12.5      41    50 47296
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{RMSE =}\NormalTok{ caret}\SpecialCharTok{::}\FunctionTok{RMSE}\NormalTok{(predictions, test.data}\SpecialCharTok{$}\NormalTok{Life.Exp),}
+  \AttributeTok{Rsquare =}\NormalTok{ caret}\SpecialCharTok{::}\FunctionTok{R2}\NormalTok{(predictions, test.data}\SpecialCharTok{$}\NormalTok{Life.Exp)}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       RMSE Rsquare
+## 1 1.113292      NA
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Proof of finding better models}
+ 
+\NormalTok{lm.null}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(Life.Exp}\SpecialCharTok{\textasciitilde{}} \DecValTok{1}\NormalTok{, }\AttributeTok{data=}\NormalTok{statdata)}
+
+\NormalTok{lm.aic.both}\OtherTok{\textless{}{-}}\FunctionTok{step}\NormalTok{(lm.null,}\AttributeTok{direction=}\StringTok{"both"}\NormalTok{,}\AttributeTok{trace=}\DecValTok{1}\NormalTok{,}\AttributeTok{scope=} \SpecialCharTok{\textasciitilde{}}
+\NormalTok{Population}\SpecialCharTok{*}\NormalTok{Income}\SpecialCharTok{+}\NormalTok{Income}\SpecialCharTok{*}\NormalTok{Illiteracy}\SpecialCharTok{+}\NormalTok{Illiteracy}\SpecialCharTok{*}\NormalTok{Murder}\SpecialCharTok{+}\NormalTok{Murder}\SpecialCharTok{*}\NormalTok{HS.Grad}\SpecialCharTok{+}\NormalTok{HS.Grad}\SpecialCharTok{*}\NormalTok{Frost}\SpecialCharTok{+}\NormalTok{Frost}\SpecialCharTok{*}\NormalTok{Area}\SpecialCharTok{+}\NormalTok{Area}\SpecialCharTok{*}\NormalTok{Population}\SpecialCharTok{+}\NormalTok{Population}\SpecialCharTok{*}\NormalTok{Illiteracy}\SpecialCharTok{+}\NormalTok{Income}\SpecialCharTok{*}\NormalTok{Murder}\SpecialCharTok{+}\NormalTok{Illiteracy}\SpecialCharTok{*}\NormalTok{HS.Grad}\SpecialCharTok{+}\NormalTok{Murder}\SpecialCharTok{*}\NormalTok{Frost}\SpecialCharTok{+}\NormalTok{HS.Grad}\SpecialCharTok{*}\NormalTok{Area}\SpecialCharTok{+}\NormalTok{Frost}\SpecialCharTok{*}\NormalTok{Population}\SpecialCharTok{+}\NormalTok{Area}\SpecialCharTok{*}\NormalTok{Income}\SpecialCharTok{+}\NormalTok{Population}\SpecialCharTok{*}\NormalTok{Murder}\SpecialCharTok{+}\NormalTok{Income}\SpecialCharTok{*}\NormalTok{HS.Grad}\SpecialCharTok{+}\NormalTok{Illiteracy}\SpecialCharTok{*}\NormalTok{Frost}\SpecialCharTok{+}\NormalTok{Murder}\SpecialCharTok{*}\NormalTok{Area}\SpecialCharTok{+}\NormalTok{HS.Grad}\SpecialCharTok{*}\NormalTok{Population}\SpecialCharTok{+}\NormalTok{Frost}\SpecialCharTok{*}\NormalTok{Income}\SpecialCharTok{+}\NormalTok{Area}\SpecialCharTok{*}\NormalTok{Illiteracy}\SpecialCharTok{+}\NormalTok{Population}\SpecialCharTok{*}\NormalTok{HS.Grad}\SpecialCharTok{+}\NormalTok{Income}\SpecialCharTok{*}\NormalTok{Frost}\SpecialCharTok{+}\NormalTok{Illiteracy}\SpecialCharTok{*}\NormalTok{Area}\SpecialCharTok{+}\NormalTok{Murder}\SpecialCharTok{*}\NormalTok{Population}\SpecialCharTok{+}\NormalTok{HS.Grad}\SpecialCharTok{*}\NormalTok{Income}\SpecialCharTok{+}\NormalTok{Frost}\SpecialCharTok{*}\NormalTok{Illiteracy}\SpecialCharTok{+}\NormalTok{Area}\SpecialCharTok{*}\NormalTok{Murder}\SpecialCharTok{+}\NormalTok{Population}\SpecialCharTok{*}\NormalTok{Frost}\SpecialCharTok{+}\NormalTok{Income}\SpecialCharTok{*}\NormalTok{Area}\SpecialCharTok{+}\NormalTok{Illiteracy}\SpecialCharTok{*}\NormalTok{Population}\SpecialCharTok{+}\NormalTok{Murder}\SpecialCharTok{*}\NormalTok{Income}\SpecialCharTok{+}\NormalTok{HS.Grad}\SpecialCharTok{*}\NormalTok{Illiteracy}\SpecialCharTok{+}\NormalTok{Frost}\SpecialCharTok{*}\NormalTok{Murder}\SpecialCharTok{+}\NormalTok{Area}\SpecialCharTok{*}\NormalTok{HS.Grad}\SpecialCharTok{+}\NormalTok{Population}\SpecialCharTok{*}\NormalTok{Area}\SpecialCharTok{+}\NormalTok{Income}\SpecialCharTok{*}\NormalTok{Population}\SpecialCharTok{+}\NormalTok{Illiteracy}\SpecialCharTok{*}\NormalTok{Income}\SpecialCharTok{+}\NormalTok{Murder}\SpecialCharTok{*}\NormalTok{Illiteracy}\SpecialCharTok{+}\NormalTok{HS.Grad}\SpecialCharTok{*}\NormalTok{Murder}\SpecialCharTok{+}\NormalTok{Frost}\SpecialCharTok{*}\NormalTok{HS.Grad}\SpecialCharTok{+}\NormalTok{Area}\SpecialCharTok{*}\NormalTok{Frost, }\AttributeTok{data=}\NormalTok{training.data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Start:  AIC=30.44
+## Life.Exp ~ 1
+## 
+##              Df Sum of Sq    RSS     AIC
+## + Murder      1    53.838 34.461 -14.609
+## + Illiteracy  1    30.578 57.721  11.179
+## + HS.Grad     1    29.931 58.368  11.737
+## + Income      1    10.223 78.076  26.283
+## + Frost       1     6.064 82.235  28.878
+## <none>                    88.299  30.435
+## + Area        1     1.017 87.282  31.856
+## + Population  1     0.409 87.890  32.203
+## 
+## Step:  AIC=-14.61
+## Life.Exp ~ Murder
+## 
+##              Df Sum of Sq    RSS     AIC
+## + HS.Grad     1     4.691 29.770 -19.925
+## + Population  1     4.016 30.445 -18.805
+## + Frost       1     3.135 31.327 -17.378
+## + Income      1     2.405 32.057 -16.226
+## <none>                    34.461 -14.609
+## + Area        1     0.470 33.992 -13.295
+## + Illiteracy  1     0.273 34.188 -13.007
+## - Murder      1    53.838 88.299  30.435
+## 
+## Step:  AIC=-19.93
+## Life.Exp ~ Murder + HS.Grad
+## 
+##                  Df Sum of Sq    RSS     AIC
+## + Frost           1    4.3987 25.372 -25.920
+## + Population      1    3.3405 26.430 -23.877
+## <none>                        29.770 -19.925
+## + Murder:HS.Grad  1    0.7148 29.056 -19.141
+## + Illiteracy      1    0.4419 29.328 -18.673
+## + Area            1    0.2775 29.493 -18.394
+## + Income          1    0.1022 29.668 -18.097
+## - HS.Grad         1    4.6910 34.461 -14.609
+## - Murder          1   28.5974 58.368  11.737
+## 
+## Step:  AIC=-25.92
+## Life.Exp ~ Murder + HS.Grad + Frost
+## 
+##                  Df Sum of Sq    RSS     AIC
+## + Population      1     2.064 23.308 -28.161
+## <none>                        25.372 -25.920
+## + Murder:Frost    1     0.793 24.579 -25.507
+## + HS.Grad:Frost   1     0.703 24.669 -25.325
+## + Income          1     0.182 25.189 -24.280
+## + Illiteracy      1     0.172 25.200 -24.259
+## + Murder:HS.Grad  1     0.055 25.316 -24.029
+## + Area            1     0.026 25.346 -23.970
+## - Frost           1     4.399 29.770 -19.925
+## - HS.Grad         1     5.955 31.327 -17.378
+## - Murder          1    32.756 58.128  13.531
+## 
+## Step:  AIC=-28.16
+## Life.Exp ~ Murder + HS.Grad + Frost + Population
+## 
+##                      Df Sum of Sq    RSS     AIC
+## + Population:Murder   1     1.506 21.802 -29.502
+## <none>                            23.308 -28.161
+## + Murder:Frost        1     0.604 22.704 -27.474
+## + Murder:HS.Grad      1     0.437 22.871 -27.107
+## + Population:HS.Grad  1     0.122 23.186 -26.424
+## + HS.Grad:Frost       1     0.033 23.275 -26.231
+## + Income              1     0.006 23.302 -26.174
+## + Illiteracy          1     0.004 23.304 -26.170
+## + Population:Frost    1     0.002 23.306 -26.166
+## + Area                1     0.001 23.307 -26.163
+## - Population          1     2.064 25.372 -25.920
+## - Frost               1     3.122 26.430 -23.877
+## - HS.Grad             1     5.112 28.420 -20.246
+## - Murder              1    34.816 58.124  15.528
+## 
+## Step:  AIC=-29.5
+## Life.Exp ~ Murder + HS.Grad + Frost + Population + Murder:Population
+## 
+##                      Df Sum of Sq    RSS     AIC
+## <none>                            21.802 -29.502
+## + Population:Frost    1    0.6045 21.197 -28.907
+## + Murder:HS.Grad      1    0.4207 21.381 -28.476
+## - Murder:Population   1    1.5063 23.308 -28.161
+## + Population:HS.Grad  1    0.2167 21.585 -28.001
+## + Murder:Frost        1    0.0954 21.706 -27.721
+## + Area                1    0.0196 21.782 -27.547
+## + HS.Grad:Frost       1    0.0091 21.793 -27.523
+## + Income              1    0.0074 21.794 -27.519
+## + Illiteracy          1    0.0036 21.798 -27.510
+## - Frost               1    2.9499 24.752 -25.157
+## - HS.Grad             1    4.9787 26.780 -21.218
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(lm.aic.both)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Life.Exp ~ Murder + HS.Grad + Frost + Population + 
+##     Murder:Population, data = statdata)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.65457 -0.39778 -0.04252  0.56678  1.46315 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        7.148e+01  9.676e-01  73.878  < 2e-16 ***
+## Murder            -3.526e-01  4.675e-02  -7.541 1.86e-09 ***
+## HS.Grad            4.598e-02  1.451e-02   3.170  0.00278 ** 
+## Frost             -5.782e-03  2.370e-03  -2.440  0.01879 *  
+## Population        -1.108e-04  9.554e-05  -1.160  0.25226    
+## Murder:Population  1.714e-05  9.829e-06   1.744  0.08822 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7039 on 44 degrees of freedom
+## Multiple R-squared:  0.7531, Adjusted R-squared:  0.725 
+## F-statistic: 26.84 on 5 and 44 DF,  p-value: 2.434e-12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# New Model 1}
+\CommentTok{\#  This model has a lower Adjusted R{-}Squared, however the model is less complex and more likely to have a lower testing error. We only had one testing sample and it was less accurate by .09 years. However, over larger predicting data this model will be faster to run.}
+
+\NormalTok{lmfit.LE1}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{Life.Exp }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Murder }\SpecialCharTok{+}\NormalTok{ HS.Grad }\SpecialCharTok{+}\NormalTok{ Frost, }\AttributeTok{data=}\NormalTok{training.data)}
+\FunctionTok{summary}\NormalTok{(lmfit.LE1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Life.Exp ~ Murder + HS.Grad + Frost, data = training.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.49047 -0.52770  0.07478  0.54840  1.22299 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 71.20628    0.97350  73.145  < 2e-16 ***
+## Murder      -0.27818    0.03628  -7.668 1.05e-09 ***
+## HS.Grad      0.04678    0.01509   3.099  0.00334 ** 
+## Frost       -0.00704    0.00241  -2.921  0.00543 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7308 on 45 degrees of freedom
+## Multiple R-squared:  0.7009, Adjusted R-squared:  0.681 
+## F-statistic: 35.16 on 3 and 45 DF,  p-value: 7.362e-12
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predictions }\OtherTok{\textless{}{-}}\NormalTok{ lmfit.LE1 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{predict}\NormalTok{(test.data)}
+
+\FunctionTok{print}\NormalTok{(predictions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       MS 
+## 69.29487
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(test.data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Population Income Illiteracy Life.Exp Murder HS.Grad Frost  Area
+## MS       2341   3098        2.4    68.09   12.5      41    50 47296
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# New Model 2}
+\CommentTok{\# This model is less complex than the original model and predicts better than both stated above models by .1 years. This means this model is so far the best}
+
+\NormalTok{lmfit.LE2}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{Life.Exp }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Murder }\SpecialCharTok{+}\NormalTok{ HS.Grad }\SpecialCharTok{+}\NormalTok{ Frost }\SpecialCharTok{+}\NormalTok{ Population, }\AttributeTok{data=}\NormalTok{training.data)}
+\FunctionTok{summary}\NormalTok{(lmfit.LE2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Life.Exp ~ Murder + HS.Grad + Frost + Population, 
+##     data = training.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.46460 -0.51123 -0.03211  0.54569  1.47681 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  7.117e+01  9.502e-01  74.898  < 2e-16 ***
+## Murder      -2.944e-01  3.653e-02  -8.060 3.31e-10 ***
+## HS.Grad      4.424e-02  1.480e-02   2.990  0.00456 ** 
+## Frost       -6.144e-03  2.404e-03  -2.556  0.01412 *  
+## Population   4.534e-05  2.515e-05   1.803  0.07824 .  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.7132 on 44 degrees of freedom
+## Multiple R-squared:  0.7215, Adjusted R-squared:  0.6962 
+## F-statistic:  28.5 on 4 and 44 DF,  p-value: 1.03e-11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predictions }\OtherTok{\textless{}{-}}\NormalTok{ lmfit.LE2 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{predict}\NormalTok{(test.data)}
+
+\FunctionTok{print}\NormalTok{(predictions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       MS 
+## 69.10352
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(test.data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Population Income Illiteracy Life.Exp Murder HS.Grad Frost  Area
+## MS       2341   3098        2.4    68.09   12.5      41    50 47296
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# New Model 3}
+\CommentTok{\# This model is the best since it is the closest to predicting the correct lifespan. It is same complexity as the first model however makes us for in its accuracy.However all the models were still off by atleast an entire year.}
+
+\NormalTok{lmfit.LE3}\OtherTok{\textless{}{-}}\FunctionTok{lm}\NormalTok{(}\AttributeTok{formula=}\NormalTok{Life.Exp }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Murder }\SpecialCharTok{+}\NormalTok{ HS.Grad }\SpecialCharTok{+}\NormalTok{ Frost }\SpecialCharTok{+}\NormalTok{ Population }\SpecialCharTok{+}\NormalTok{ Murder}\SpecialCharTok{:}\NormalTok{Population, }\AttributeTok{data=}\NormalTok{training.data)}
+\FunctionTok{summary}\NormalTok{(lmfit.LE3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Life.Exp ~ Murder + HS.Grad + Frost + Population + 
+##     Murder:Population, data = training.data)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.63836 -0.38050 -0.06015  0.52998  1.43852 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        7.158e+01  9.654e-01  74.153  < 2e-16 ***
+## Murder            -3.444e-01  4.694e-02  -7.337  4.2e-09 ***
+## HS.Grad            4.390e-02  1.452e-02   3.024   0.0042 ** 
+## Frost             -5.972e-03  2.360e-03  -2.530   0.0151 *  
+## Population        -1.060e-04  9.504e-05  -1.115   0.2709    
+## Murder:Population  1.616e-05  9.801e-06   1.649   0.1065    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6997 on 43 degrees of freedom
+## Multiple R-squared:  0.7381, Adjusted R-squared:  0.7076 
+## F-statistic: 24.23 on 5 and 43 DF,  p-value: 1.641e-11
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predictions }\OtherTok{\textless{}{-}}\NormalTok{ lmfit.LE3 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{predict}\NormalTok{(test.data)}
+
+\FunctionTok{print}\NormalTok{(predictions)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       MS 
+## 69.00555
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(test.data)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Population Income Illiteracy Life.Exp Murder HS.Grad Frost  Area
+## MS       2341   3098        2.4    68.09   12.5      41    50 47296
+\end{verbatim}
+
+\hypertarget{question-2}{%
+\paragraph{Question 2}\label{question-2}}
+
+\hypertarget{loading-data-1}{%
+\paragraph{Loading Data}\label{loading-data-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(mlbench)}
+\FunctionTok{data}\NormalTok{(}\StringTok{"PimaIndiansDiabetes2"}\NormalTok{)}
+\FunctionTok{head}\NormalTok{(PimaIndiansDiabetes2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   pregnant glucose pressure triceps insulin mass pedigree age diabetes
+## 1        6     148       72      35      NA 33.6    0.627  50      pos
+## 2        1      85       66      29      NA 26.6    0.351  31      neg
+## 3        8     183       64      NA      NA 23.3    0.672  32      pos
+## 4        1      89       66      23      94 28.1    0.167  21      neg
+## 5        0     137       40      35     168 43.1    2.288  33      pos
+## 6        5     116       74      NA      NA 25.6    0.201  30      neg
+\end{verbatim}
+
+\hypertarget{take-diabetes-as-the-response-and-all-the-other-variables-as-predictors.-to-simply-the-problem-you-may-remove-the-rows-with-na-using-the-function-na.omit.split-the-dataset-to-80-training-and-20-testing-sets-set-the-seed-as-100.}{%
+\paragraph{Take diabetes as the response, and all the other variables as
+predictors. (To simply the problem, you may remove the rows with NA
+using the function ``na.omit'').Split the dataset to 80\% training and
+20\% testing sets (set the seed as
+100).}\label{take-diabetes-as-the-response-and-all-the-other-variables-as-predictors.-to-simply-the-problem-you-may-remove-the-rows-with-na-using-the-function-na.omit.split-the-dataset-to-80-training-and-20-testing-sets-set-the-seed-as-100.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+
+\NormalTok{new.data2 }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(PimaIndiansDiabetes2, }\AttributeTok{na.action =} \StringTok{"omit"}\NormalTok{, }\AttributeTok{fill =} \ConstantTok{NULL}\NormalTok{)}
+
+\NormalTok{training.samples }\OtherTok{\textless{}{-}}\NormalTok{ new.data2}\SpecialCharTok{$}\NormalTok{diabetes }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{createDataPartition}\NormalTok{(}\AttributeTok{p =} \FloatTok{0.80}\NormalTok{, }\AttributeTok{list =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{train.data2  }\OtherTok{\textless{}{-}}\NormalTok{ new.data2[training.samples, ]}
+\NormalTok{test.data2 }\OtherTok{\textless{}{-}}\NormalTok{ new.data2[}\SpecialCharTok{{-}}\NormalTok{training.samples, ]}
+
+\FunctionTok{print}\NormalTok{(train.data2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     pregnant glucose pressure triceps insulin mass pedigree age diabetes
+## 4          1      89       66      23      94 28.1    0.167  21      neg
+## 5          0     137       40      35     168 43.1    2.288  33      pos
+## 7          3      78       50      32      88 31.0    0.248  26      pos
+## 9          2     197       70      45     543 30.5    0.158  53      pos
+## 14         1     189       60      23     846 30.1    0.398  59      pos
+## 15         5     166       72      19     175 25.8    0.587  51      pos
+## 19         1     103       30      38      83 43.3    0.183  33      neg
+## 20         1     115       70      30      96 34.6    0.529  32      pos
+## 25        11     143       94      33     146 36.6    0.254  51      pos
+## 26        10     125       70      26     115 31.1    0.205  41      pos
+## 28         1      97       66      15     140 23.2    0.487  22      neg
+## 29        13     145       82      19     110 22.2    0.245  57      neg
+## 36         4     103       60      33     192 24.0    0.966  33      neg
+## 41         3     180       64      25      70 34.0    0.271  26      neg
+## 44         9     171      110      24     240 45.4    0.721  54      pos
+## 52         1     101       50      15      36 24.2    0.526  26      neg
+## 53         5      88       66      21      23 24.4    0.342  30      neg
+## 54         8     176       90      34     300 33.7    0.467  58      pos
+## 55         7     150       66      42     342 34.7    0.718  42      neg
+## 57         7     187       68      39     304 37.7    0.254  41      pos
+## 58         0     100       88      60     110 46.8    0.962  31      neg
+## 60         0     105       64      41     142 41.5    0.173  22      neg
+## 64         2     141       58      34     128 25.4    0.699  24      neg
+## 69         1      95       66      13      38 19.6    0.334  25      neg
+## 72         5     139       64      35     140 28.6    0.411  26      neg
+## 74         4     129       86      20     270 35.1    0.231  23      neg
+## 83         7      83       78      26      71 29.3    0.767  36      neg
+## 88         2     100       68      25      71 38.5    0.324  26      neg
+## 89        15     136       70      32     110 37.1    0.153  43      pos
+## 93         7      81       78      40      48 46.7    0.261  42      neg
+## 95         2     142       82      18      64 24.7    0.761  21      neg
+## 96         6     144       72      27     228 33.9    0.255  40      neg
+## 98         1      71       48      18      76 20.4    0.323  22      neg
+## 99         6      93       50      30      64 28.7    0.356  23      neg
+## 100        1     122       90      51     220 49.7    0.325  31      pos
+## 106        1     126       56      29     152 28.7    0.801  21      neg
+## 108        4     144       58      28     140 29.5    0.287  37      neg
+## 109        3      83       58      31      18 34.3    0.336  25      neg
+## 110        0      95       85      25      36 37.4    0.247  24      pos
+## 111        3     171       72      33     135 33.3    0.199  24      pos
+## 112        8     155       62      26     495 34.0    0.543  46      pos
+## 115        7     160       54      32     175 30.5    0.588  39      pos
+## 121        0     162       76      56     100 53.2    0.759  25      pos
+## 123        2     107       74      30     100 33.6    0.404  23      neg
+## 126        1      88       30      42      99 55.0    0.496  26      pos
+## 127        3     120       70      30     135 42.9    0.452  30      neg
+## 128        1     118       58      36      94 33.3    0.261  23      neg
+## 129        1     117       88      24     145 34.5    0.403  40      pos
+## 131        4     173       70      14     168 29.7    0.361  33      pos
+## 133        3     170       64      37     225 34.5    0.356  30      pos
+## 135        2      96       68      13      49 21.1    0.647  26      neg
+## 136        2     125       60      20     140 33.8    0.088  31      neg
+## 137        0     100       70      26      50 30.8    0.597  21      neg
+## 138        0      93       60      25      92 28.7    0.532  22      neg
+## 140        5     105       72      29     325 36.9    0.159  28      neg
+## 143        2     108       52      26      63 32.5    0.318  22      neg
+## 145        4     154       62      31     284 32.8    0.237  23      neg
+## 148        2     106       64      35     119 30.5    1.400  34      neg
+## 151        1     136       74      50     204 37.4    0.399  24      neg
+## 153        9     156       86      28     155 34.3    1.189  42      pos
+## 154        1     153       82      42     485 40.6    0.687  23      neg
+## 157        2      99       52      15      94 24.6    0.637  21      neg
+## 158        1     109       56      21     135 25.2    0.833  23      neg
+## 159        2      88       74      19      53 29.0    0.229  22      neg
+## 160       17     163       72      41     114 40.9    0.817  47      pos
+## 162        7     102       74      40     105 37.2    0.204  45      neg
+## 163        0     114       80      34     285 44.2    0.167  27      neg
+## 170        3     111       90      12      78 28.4    0.495  29      neg
+## 172        6     134       70      23     130 35.4    0.542  29      pos
+## 174        1      79       60      42      48 43.5    0.678  23      neg
+## 175        2      75       64      24      55 29.7    0.370  33      neg
+## 176        8     179       72      42     130 32.7    0.719  36      pos
+## 178        0     129      110      46     130 67.1    0.319  26      pos
+## 182        0     119       64      18      92 34.9    0.725  23      neg
+## 187        8     181       68      36     495 30.1    0.615  60      pos
+## 189        8     109       76      39     114 27.9    0.640  31      pos
+## 190        5     139       80      35     160 31.6    0.361  25      pos
+## 198        3     107       62      13      48 22.9    0.678  23      pos
+## 199        4     109       64      44      99 34.8    0.905  26      pos
+## 200        4     148       60      27     318 30.9    0.150  29      pos
+## 204        2      99       70      16      44 20.4    0.235  27      neg
+## 207        8     196       76      29     280 37.5    0.605  57      pos
+## 209        1      96       64      27      87 33.2    0.289  21      neg
+## 214        0     140       65      26     130 42.6    0.431  24      pos
+## 215        9     112       82      32     175 34.2    0.260  36      pos
+## 217        5     109       62      41     129 35.8    0.514  25      pos
+## 224        7     142       60      33     190 28.8    0.687  61      neg
+## 225        1     100       66      15      56 23.6    0.666  26      neg
+## 226        1      87       78      27      32 34.6    0.101  22      neg
+## 232        6     134       80      37     370 46.2    0.238  46      pos
+## 235        3      74       68      28      45 29.7    0.293  23      neg
+## 237        7     181       84      21     192 35.9    0.586  51      pos
+## 242        4      91       70      32      88 33.1    0.446  22      neg
+## 244        6     119       50      22     176 27.1    1.318  33      pos
+## 248        0     165       90      33     680 52.3    0.427  23      neg
+## 249        9     124       70      33     402 35.4    0.282  34      neg
+## 253        2      90       80      14      55 24.4    0.249  24      neg
+## 255       12      92       62       7     258 27.6    0.926  44      pos
+## 259        1     193       50      16     375 25.9    0.655  24      neg
+## 260       11     155       76      28     150 33.3    1.353  51      pos
+## 261        3     191       68      15     130 30.9    0.299  34      neg
+## 266        5      96       74      18      67 33.6    0.997  43      neg
+## 272        2     108       62      32      56 25.2    0.128  21      neg
+## 274        1      71       78      50      45 33.2    0.422  21      neg
+## 276        2     100       70      52      57 40.5    0.677  25      neg
+## 278        0     104       64      23     116 27.8    0.454  23      neg
+## 280        2     108       62      10     278 25.3    0.881  22      neg
+## 282       10     129       76      28     122 35.9    0.280  39      neg
+## 283        7     133       88      15     155 32.4    0.262  37      neg
+## 286        7     136       74      26     135 26.0    0.647  51      neg
+## 287        5     155       84      44     545 38.7    0.619  34      neg
+## 288        1     119       86      39     220 45.6    0.808  29      pos
+## 290        5     108       72      43      75 36.1    0.263  33      neg
+## 291        0      78       88      29      40 36.9    0.434  21      neg
+## 293        2     128       78      37     182 43.3    1.224  31      pos
+## 294        1     128       48      45     194 40.5    0.613  24      pos
+## 296        6     151       62      31     120 35.5    0.692  28      neg
+## 297        2     146       70      38     360 28.0    0.337  29      pos
+## 302        2     144       58      33     135 31.6    0.422  25      pos
+## 303        5      77       82      41      42 35.8    0.156  35      neg
+## 306        2     120       76      37     105 39.7    0.215  29      neg
+## 307       10     161       68      23     132 25.5    0.326  47      pos
+## 308        0     137       68      14     148 24.8    0.143  21      neg
+## 310        2     124       68      28     205 32.9    0.875  30      pos
+## 313        2     155       74      17      96 26.6    0.433  27      pos
+## 314        3     113       50      10      85 29.5    0.626  25      neg
+## 317        3      99       80      11      64 19.3    0.284  30      neg
+## 319        3     115       66      39     140 38.1    0.150  28      neg
+## 321        4     129       60      12     231 27.5    0.527  31      neg
+## 324       13     152       90      33      29 26.8    0.731  43      pos
+## 326        1     157       72      21     168 25.6    0.123  24      neg
+## 330        6     105       70      32      68 30.8    0.122  37      neg
+## 332        2      87       58      16      52 32.7    0.166  25      neg
+## 335        1      95       60      18      58 23.9    0.260  22      neg
+## 336        0     165       76      43     255 47.9    0.259  26      neg
+## 339        9     152       78      34     171 34.2    0.893  33      pos
+## 341        1     130       70      13     105 25.9    0.472  22      neg
+## 342        1      95       74      21      73 25.9    0.673  36      neg
+## 346        8     126       88      36     108 38.5    0.349  49      neg
+## 347        1     139       46      19      83 28.7    0.654  22      neg
+## 354        1      90       62      12      43 27.2    0.580  24      neg
+## 357        1     125       50      40     167 33.3    0.962  28      pos
+## 359       12      88       74      40      54 35.3    0.378  48      neg
+## 360        1     196       76      36     249 36.5    0.875  29      pos
+## 361        5     189       64      33     325 31.2    0.583  29      pos
+## 365        4     147       74      25     293 34.9    0.385  30      neg
+## 366        5      99       54      28      83 34.0    0.499  30      neg
+## 371        3     173       82      48     465 38.4    2.137  25      pos
+## 373        0      84       64      22      66 35.8    0.545  21      neg
+## 374        2     105       58      40      94 34.9    0.225  25      neg
+## 375        2     122       52      43     158 36.2    0.816  28      neg
+## 376       12     140       82      43     325 39.2    0.528  58      pos
+## 377        0      98       82      15      84 25.2    0.299  22      neg
+## 378        1      87       60      37      75 37.2    0.509  22      neg
+## 380        0      93      100      39      72 43.4    1.021  35      neg
+## 381        1     107       72      30      82 30.8    0.821  24      neg
+## 383        1     109       60       8     182 25.4    0.947  21      neg
+## 386        1     119       54      13      50 22.3    0.205  24      neg
+## 389        5     144       82      26     285 32.0    0.452  58      pos
+## 391        1     100       66      29     196 32.0    0.444  42      neg
+## 393        1     131       64      14     415 23.7    0.389  21      neg
+## 394        4     116       72      12      87 22.1    0.463  37      neg
+## 396        2     127       58      24     275 27.7    1.600  25      neg
+## 397        3      96       56      34     115 24.7    0.944  39      neg
+## 406        2     123       48      32     165 42.1    0.520  26      neg
+## 410        1     172       68      49     579 42.4    0.702  28      pos
+## 412        1     112       72      30     176 34.4    0.528  25      neg
+## 413        1     143       84      23     310 42.4    1.076  22      neg
+## 415        0     138       60      35     167 34.6    0.534  21      pos
+## 416        3     173       84      33     474 35.7    0.258  22      pos
+## 422        2      94       68      18      76 26.0    0.561  21      neg
+## 425        8     151       78      32     210 42.9    0.516  36      pos
+## 426        4     184       78      39     277 37.0    0.264  31      pos
+## 428        1     181       64      30     180 34.1    0.328  38      pos
+## 430        1      95       82      25     180 35.0    0.233  43      pos
+## 432        3      89       74      16      85 30.4    0.551  38      neg
+## 442        2      83       66      23      50 32.2    0.497  22      neg
+## 443        4     117       64      27     120 33.2    0.230  24      neg
+## 446        0     180       78      63      14 59.4    2.420  25      pos
+## 447        1     100       72      12      70 25.3    0.658  28      neg
+## 448        0      95       80      45      92 36.5    0.330  26      neg
+## 450        0     120       74      18      63 30.5    0.285  26      neg
+## 451        1      82       64      13      95 21.2    0.415  23      neg
+## 453        0      91       68      32     210 39.9    0.381  25      neg
+## 455        2     100       54      28     105 37.8    0.498  24      neg
+## 458        5      86       68      28      71 30.2    0.364  24      neg
+## 460        9     134       74      33      60 25.9    0.460  81      neg
+## 461        9     120       72      22      56 20.8    0.733  48      neg
+## 466        0     124       56      13     105 21.8    0.452  21      neg
+## 467        0      74       52      10      36 27.8    0.269  22      neg
+## 468        0      97       64      36     100 36.8    0.600  25      neg
+## 470        6     154       78      41     140 46.1    0.571  27      neg
+## 477        2     105       80      45     191 33.7    0.711  29      pos
+## 478        7     114       76      17     110 23.8    0.466  31      neg
+## 479        8     126       74      38      75 25.9    0.162  39      neg
+## 481        3     158       70      30     328 35.5    0.344  35      pos
+## 484        0      84       82      31     125 38.2    0.233  23      neg
+## 488        0     173       78      32     265 46.5    1.159  58      neg
+## 491        2      83       65      28      66 36.8    0.629  24      neg
+## 498        2      81       72      15      76 30.1    0.547  25      neg
+## 499        7     195       70      33     145 25.1    0.163  55      pos
+## 500        6     154       74      32     193 29.3    0.839  39      neg
+## 501        2     117       90      19      71 25.2    0.313  21      neg
+## 507        0     180       90      26      90 36.5    0.314  35      pos
+## 508        1     130       60      23     170 28.6    0.692  21      neg
+## 509        2      84       50      23      76 30.4    0.968  21      neg
+## 512        0     139       62      17     210 22.1    0.207  21      neg
+## 516        3     163       70      18     105 31.6    0.268  28      pos
+## 517        9     145       88      34     165 30.3    0.771  53      pos
+## 521        2      68       70      32      66 25.0    0.187  25      neg
+## 522        3     124       80      33     130 33.2    0.305  26      neg
+## 527        1      97       64      19      82 18.2    0.299  21      neg
+## 528        3     116       74      15     105 26.3    0.107  24      neg
+## 529        0     117       66      31     188 30.8    0.493  22      neg
+## 531        2     122       60      18     106 29.8    0.717  22      neg
+## 533        1      86       66      52      65 41.3    0.917  29      neg
+## 535        1      77       56      30      56 33.3    1.251  24      neg
+## 539        0     127       80      37     210 36.3    0.804  23      neg
+## 540        3     129       92      49     155 36.4    0.968  32      pos
+## 541        8     100       74      40     215 39.4    0.661  43      pos
+## 544        4      84       90      23      56 39.5    0.159  25      neg
+## 545        1      88       78      29      76 32.0    0.365  29      neg
+## 546        8     186       90      35     225 34.5    0.423  37      pos
+## 547        5     187       76      27     207 43.6    1.034  53      pos
+## 548        4     131       68      21     166 33.1    0.160  28      neg
+## 552        3      84       68      30     106 31.9    0.591  25      neg
+## 554        1      88       62      24      44 29.9    0.422  23      neg
+## 555        1      84       64      23     115 36.9    0.471  28      neg
+## 556        7     124       70      33     215 25.5    0.161  37      neg
+## 562        0     198       66      32     274 41.3    0.502  28      pos
+## 563        1      87       68      34      77 37.6    0.401  24      neg
+## 564        6      99       60      19      54 26.9    0.497  32      neg
+## 566        2      95       54      14      88 26.1    0.748  22      neg
+## 567        1      99       72      30      18 38.6    0.412  21      neg
+## 568        6      92       62      32     126 32.0    0.085  46      neg
+## 574        2      98       60      17     120 34.7    0.198  22      neg
+## 576        1     119       44      47      63 35.5    0.280  25      neg
+## 577        6     108       44      20     130 24.0    0.813  35      neg
+## 585        8     124       76      24     600 28.7    0.687  52      pos
+## 589        3     176       86      27     156 33.3    1.154  52      pos
+## 592        2     112       78      50     140 39.4    0.175  24      neg
+## 594        2      82       52      22     115 28.5    1.699  25      neg
+## 595        6     123       72      45     230 33.6    0.733  34      neg
+## 596        0     188       82      14     185 32.0    0.682  22      pos
+## 598        1      89       24      19      25 27.8    0.559  21      neg
+## 600        1     109       38      18     120 23.1    0.407  26      neg
+## 604        7     150       78      29     126 35.2    0.692  54      pos
+## 607        1     181       78      42     293 40.0    1.258  22      pos
+## 608        1      92       62      25      41 19.5    0.482  25      neg
+## 610        1     111       62      13     182 24.0    0.138  23      neg
+## 611        3     106       54      21     158 30.9    0.292  24      neg
+## 613        7     168       88      42     321 38.2    0.787  40      pos
+## 615       11     138       74      26     144 36.1    0.557  50      pos
+## 618        2      68       62      13      15 20.1    0.257  23      neg
+## 624        0      94       70      27     115 43.5    0.347  21      neg
+## 632        0     102       78      40      90 34.5    0.238  24      neg
+## 639        7      97       76      32      91 40.9    0.871  32      pos
+## 641        0     102       86      17     105 29.3    0.695  27      neg
+## 645        3     103       72      30     152 27.6    0.730  27      neg
+## 646        2     157       74      35     440 39.4    0.134  30      neg
+## 647        1     167       74      17     144 23.4    0.447  33      pos
+## 648        0     179       50      36     159 37.8    0.455  22      pos
+## 649       11     136       84      35     130 28.3    0.260  42      pos
+## 651        1      91       54      25     100 25.2    0.234  23      neg
+## 652        1     117       60      23     106 33.8    0.466  27      neg
+## 653        5     123       74      40      77 34.1    0.269  28      neg
+## 655        1     106       70      28     135 34.2    0.142  22      neg
+## 657        2     101       58      35      90 21.8    0.155  22      neg
+## 658        1     120       80      48     200 38.9    1.162  41      neg
+## 660        3      80       82      31      70 34.2    1.292  27      pos
+## 663        8     167      106      46     231 37.6    0.165  43      pos
+## 664        9     145       80      46     130 37.9    0.637  40      pos
+## 666        1     112       80      45     132 34.8    0.217  24      neg
+## 669        6      98       58      33     190 34.0    0.430  43      neg
+## 670        9     154       78      30     100 30.9    0.164  45      neg
+## 674        3     123      100      35     240 57.3    0.880  22      neg
+## 680        2     101       58      17     265 24.2    0.614  23      neg
+## 681        2      56       56      28      45 24.2    0.332  22      neg
+## 683        0      95       64      39     105 44.6    0.366  22      neg
+## 686        2     129       74      26     205 33.2    0.591  25      neg
+## 689        1     140       74      26     180 24.1    0.828  23      neg
+## 690        1     144       82      46     180 46.1    0.335  46      pos
+## 693        2     121       70      32      95 39.1    0.886  23      neg
+## 694        7     129       68      49     125 38.5    0.439  43      pos
+## 696        7     142       90      24     480 30.4    0.128  43      pos
+## 697        3     169       74      19     125 29.9    0.268  31      pos
+## 699        4     127       88      11     155 34.5    0.598  28      neg
+## 701        2     122       76      27     200 35.9    0.483  26      neg
+## 708        2     127       46      21     335 34.4    0.176  22      neg
+## 710        2      93       64      32     160 38.0    0.674  23      pos
+## 711        3     158       64      13     387 31.2    0.295  24      neg
+## 712        5     126       78      27      22 29.6    0.439  40      neg
+## 714        0     134       58      20     291 26.4    0.352  21      neg
+## 716        7     187       50      33     392 33.9    0.826  34      pos
+## 717        3     173       78      39     185 33.8    0.970  31      pos
+## 719        1     108       60      46     178 35.5    0.415  24      neg
+## 722        1     114       66      36     200 38.1    0.289  21      neg
+## 723        1     149       68      29     127 29.3    0.349  42      pos
+## 727        1     116       78      29     180 36.1    0.496  25      neg
+## 731        3     130       78      23      79 28.4    0.323  34      pos
+## 734        2     106       56      27     165 29.0    0.426  22      neg
+## 737        0     126       86      27     120 27.4    0.515  21      neg
+## 739        2      99       60      17     160 36.6    0.453  21      neg
+## 741       11     120       80      37     150 42.3    0.785  48      pos
+## 742        3     102       44      20      94 30.8    0.400  26      neg
+## 743        1     109       58      18     116 28.5    0.219  22      neg
+## 745       13     153       88      37     140 40.6    1.174  39      neg
+## 746       12     100       84      33     105 30.0    0.488  46      neg
+## 749        3     187       70      22     200 36.4    0.408  36      pos
+## 754        0     181       88      44     510 43.3    0.222  26      pos
+## 756        1     128       88      39     110 36.5    1.057  37      pos
+## 761        2      88       58      26      16 28.4    0.766  22      neg
+## 764       10     101       76      48     180 32.9    0.171  63      neg
+## 766        5     121       72      23     112 26.2    0.245  30      neg
+\end{verbatim}
+
+\hypertarget{fit-a-linear-svm-model-based-on-the-training-setuse-function-tune.svm-to-find-the-best-c-parameter.-evaluate-its-classification-performance-using-the-testing-set.-list-the-type-i-and-type-ii-errors-respectively.}{%
+\paragraph{Fit a linear SVM model based on the training set(use function
+tune.svm to find the best C parameter). Evaluate its classification
+performance using the testing set. List the Type I and Type II errors,
+respectively.}\label{fit-a-linear-svm-model-based-on-the-training-setuse-function-tune.svm-to-find-the-best-c-parameter.-evaluate-its-classification-performance-using-the-testing-set.-list-the-type-i-and-type-ii-errors-respectively.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{tune.svm}\NormalTok{(diabetes }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ train.data2, }\AttributeTok{cost =}\NormalTok{ (.}\DecValTok{01}\SpecialCharTok{:}\DecValTok{10}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Parameter tuning of 'svm':
+## 
+## - sampling method: 10-fold cross validation 
+## 
+## - best parameters:
+##  cost
+##  3.01
+## 
+## - best performance: 0.2200605
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{svmfit }\OtherTok{=} \FunctionTok{svm}\NormalTok{(diabetes }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ train.data2, }\AttributeTok{kernel =} \StringTok{"linear"}\NormalTok{, }\AttributeTok{cost =} \FloatTok{4.01}\NormalTok{, }\AttributeTok{scale =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(svmfit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## svm(formula = diabetes ~ ., data = train.data2, kernel = "linear", 
+##     cost = 4.01, scale = FALSE)
+## 
+## 
+## Parameters:
+##    SVM-Type:  C-classification 
+##  SVM-Kernel:  linear 
+##        cost:  4.01 
+## 
+## Number of Support Vectors:  141
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data.test.svm}\OtherTok{\textless{}{-}}\FunctionTok{predict}\NormalTok{(svmfit,test.data2)}
+
+
+\NormalTok{ConfusionM.svm}\OtherTok{\textless{}{-}}\FunctionTok{confusionMatrix}\NormalTok{(data.test.svm,test.data2}\SpecialCharTok{$}\NormalTok{diabetes)}
+\FunctionTok{print}\NormalTok{(ConfusionM.svm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction neg pos
+##        neg  47  18
+##        pos   5   8
+##                                          
+##                Accuracy : 0.7051         
+##                  95% CI : (0.5911, 0.803)
+##     No Information Rate : 0.6667         
+##     P-Value [Acc > NIR] : 0.27712        
+##                                          
+##                   Kappa : 0.2418         
+##                                          
+##  Mcnemar's Test P-Value : 0.01234        
+##                                          
+##             Sensitivity : 0.9038         
+##             Specificity : 0.3077         
+##          Pos Pred Value : 0.7231         
+##          Neg Pred Value : 0.6154         
+##              Prevalence : 0.6667         
+##          Detection Rate : 0.6026         
+##    Detection Prevalence : 0.8333         
+##       Balanced Accuracy : 0.6058         
+##                                          
+##        'Positive' Class : neg            
+## 
+\end{verbatim}
+
+\hypertarget{fit-a-nonlinear-svm-modelbased-on-the-training-set-use-function-tune.svm-to-find-the-best-c-parameter.-compare-the-type-i-and-type-ii-errors-with-the-onesyou-obtained-from-2.1.-which-one-is-better-why}{%
+\paragraph{Fit a nonlinear SVM modelbased on the training set (use
+function tune.svm to find the best C parameter). Compare the Type I and
+Type II errors with the onesyou obtained from 2.1. Which one is better?
+Why?}\label{fit-a-nonlinear-svm-modelbased-on-the-training-set-use-function-tune.svm-to-find-the-best-c-parameter.-compare-the-type-i-and-type-ii-errors-with-the-onesyou-obtained-from-2.1.-which-one-is-better-why}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{svmfit }\OtherTok{=} \FunctionTok{svm}\NormalTok{(diabetes }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }\AttributeTok{data =}\NormalTok{ train.data2, }\AttributeTok{kernel =} \StringTok{"radial"}\NormalTok{, }\AttributeTok{cost =} \FloatTok{4.01}\NormalTok{, }\AttributeTok{scale =} \ConstantTok{FALSE}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(svmfit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## svm(formula = diabetes ~ ., data = train.data2, kernel = "radial", 
+##     cost = 4.01, scale = FALSE)
+## 
+## 
+## Parameters:
+##    SVM-Type:  C-classification 
+##  SVM-Kernel:  radial 
+##        cost:  4.01 
+## 
+## Number of Support Vectors:  314
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{data.test.svm}\OtherTok{\textless{}{-}}\FunctionTok{predict}\NormalTok{(svmfit,test.data2)}
+
+
+\NormalTok{ConfusionM.svm}\OtherTok{\textless{}{-}}\FunctionTok{confusionMatrix}\NormalTok{(data.test.svm,test.data2}\SpecialCharTok{$}\NormalTok{diabetes)}
+\FunctionTok{print}\NormalTok{(ConfusionM.svm)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction neg pos
+##        neg  52  26
+##        pos   0   0
+##                                           
+##                Accuracy : 0.6667          
+##                  95% CI : (0.5508, 0.7694)
+##     No Information Rate : 0.6667          
+##     P-Value [Acc > NIR] : 0.553           
+##                                           
+##                   Kappa : 0               
+##                                           
+##  Mcnemar's Test P-Value : 9.443e-07       
+##                                           
+##             Sensitivity : 1.0000          
+##             Specificity : 0.0000          
+##          Pos Pred Value : 0.6667          
+##          Neg Pred Value :    NaN          
+##              Prevalence : 0.6667          
+##          Detection Rate : 0.6667          
+##    Detection Prevalence : 1.0000          
+##       Balanced Accuracy : 0.5000          
+##                                           
+##        'Positive' Class : neg             
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# The accuracy is higher for the linear model, which means the linear svm model is better.  }
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{question-3}{%
+\paragraph{Question 3}\label{question-3}}
+
+\hypertarget{use-mvrnormfunction-to-generate-the-training-data-set-below-use-seed100}{%
+\paragraph{Use mvrnormfunction to generate the training data set below
+(use
+seed(100)):}\label{use-mvrnormfunction-to-generate-the-training-data-set-below-use-seed100}}
+
+\hypertarget{agenerate-three-groups-of-two-dimensional-data-50-rows-in-each-group-with-their-mean-as-ux1d707100ux1d447-ux1d707203ux1d447-ux1d70731.51.5ux1d447-and-the-common-covariance-matrix-10.50.51.}{%
+\subsection{a)Generate three groups of two-dimensional data (50 rows in
+each group) with their mean as 𝜇1={[}0,0{]}𝑇, 𝜇2={[}0,3{]}𝑇,
+𝜇3={[}1.5,1.5{]}𝑇, and the common covariance matrix
+∑={[}10.50.51{]}.}\label{agenerate-three-groups-of-two-dimensional-data-50-rows-in-each-group-with-their-mean-as-ux1d707100ux1d447-ux1d707203ux1d447-ux1d70731.51.5ux1d447-and-the-common-covariance-matrix-10.50.51.}}
+
+\hypertarget{bx-is-obtained-by-concatenating-the-three-groups-together-150-samples-of-two-dimensional-input}{%
+\subsection{b)X is obtained by concatenating the three groups together
+(150 samples of two-dimensional
+input)}\label{bx-is-obtained-by-concatenating-the-three-groups-together-150-samples-of-two-dimensional-input}}
+
+\hypertarget{cy-is-a-1501-vector-with-the-first-50-elements-equal-to-1-the-second-50-elements-equal-to-0-and-the-third-50-elements-equal-to-1}{%
+\subsection{c)Y is a 150*1 vector with the first 50 elements equal to 1,
+the second 50 elements equal to 0, and the third 50 elements equal to
+1}\label{cy-is-a-1501-vector-with-the-first-50-elements-equal-to-1-the-second-50-elements-equal-to-0-and-the-third-50-elements-equal-to-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# A)}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+
+\NormalTok{n }\OtherTok{\textless{}{-}} \DecValTok{50}
+\NormalTok{R }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+              \FloatTok{0.5}\NormalTok{, }\DecValTok{1}\NormalTok{), }
+            \AttributeTok{nrow =} \DecValTok{2}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+
+\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\AttributeTok{X1 =} \DecValTok{0}\NormalTok{, }\AttributeTok{X2 =} \DecValTok{0}\NormalTok{)}
+\NormalTok{train.data1 }\OtherTok{\textless{}{-}}\NormalTok{ mvtnorm}\SpecialCharTok{::}\FunctionTok{rmvnorm}\NormalTok{(n, }\AttributeTok{mean =}\NormalTok{ mu, }\AttributeTok{sigma =}\NormalTok{ R)}
+\NormalTok{train.data1 }\OtherTok{\textless{}{-}}\NormalTok{ MASS}\SpecialCharTok{::}\FunctionTok{mvrnorm}\NormalTok{(n, }\AttributeTok{mu =}\NormalTok{ mu, }\AttributeTok{Sigma =}\NormalTok{ R)}
+
+
+\NormalTok{R }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+              \FloatTok{0.5}\NormalTok{, }\DecValTok{1}\NormalTok{), }
+            \AttributeTok{nrow =} \DecValTok{2}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+
+\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\AttributeTok{X1 =} \DecValTok{0}\NormalTok{, }\AttributeTok{X2 =} \DecValTok{3}\NormalTok{)}
+\NormalTok{train.data2 }\OtherTok{\textless{}{-}}\NormalTok{ mvtnorm}\SpecialCharTok{::}\FunctionTok{rmvnorm}\NormalTok{(n, }\AttributeTok{mean =}\NormalTok{ mu, }\AttributeTok{sigma =}\NormalTok{ R)}
+\NormalTok{train.data2 }\OtherTok{\textless{}{-}}\NormalTok{ MASS}\SpecialCharTok{::}\FunctionTok{mvrnorm}\NormalTok{(n, }\AttributeTok{mu =}\NormalTok{ mu, }\AttributeTok{Sigma =}\NormalTok{ R)}
+                             
+\NormalTok{R }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FloatTok{0.5}\NormalTok{,}
+              \FloatTok{0.5}\NormalTok{, }\DecValTok{1}\NormalTok{), }
+            \AttributeTok{nrow =} \DecValTok{2}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+
+\NormalTok{mu }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\AttributeTok{X1 =} \FloatTok{1.5}\NormalTok{, }\AttributeTok{X2 =} \FloatTok{1.5}\NormalTok{)}
+\NormalTok{train.data3 }\OtherTok{\textless{}{-}}\NormalTok{ mvtnorm}\SpecialCharTok{::}\FunctionTok{rmvnorm}\NormalTok{(n, }\AttributeTok{mean =}\NormalTok{ mu, }\AttributeTok{sigma =}\NormalTok{ R)}
+\NormalTok{train.data3 }\OtherTok{\textless{}{-}}\NormalTok{ MASS}\SpecialCharTok{::}\FunctionTok{mvrnorm}\NormalTok{(n, }\AttributeTok{mu =}\NormalTok{ mu, }\AttributeTok{Sigma =}\NormalTok{ R)}
+
+\CommentTok{\#head(train.data1)}
+\CommentTok{\#head(train.data2)}
+\CommentTok{\#head(train.data3)}
+
+
+\CommentTok{\# B)}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(train.data1,train.data2,train.data3)}
+\NormalTok{x.df }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(x)}
+\CommentTok{\#print(x)}
+
+\CommentTok{\# C)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{), }\FunctionTok{c}\NormalTok{(}\DecValTok{50}\NormalTok{, }\DecValTok{50}\NormalTok{, }\DecValTok{50}\NormalTok{))}
+\CommentTok{\#print(y)}
+
+\NormalTok{train.data3 }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(x, }\AttributeTok{y =} \FunctionTok{as.factor}\NormalTok{(y))}
+\FunctionTok{print}\NormalTok{(train.data3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               X1          X2 y
+## 1   -0.805663307  0.22902315 1
+## 2    0.353739485  2.00724271 1
+## 3   -0.397320105 -0.41526692 1
+## 4    0.742053370  0.71785005 1
+## 5   -1.387783053 -1.13753615 1
+## 6   -0.178112828 -0.51523736 1
+## 7   -0.615720241 -0.72907395 1
+## 8   -0.270378703 -0.36926162 1
+## 9    0.941915955  1.20600278 1
+## 10  -0.162532250 -0.02354856 1
+## 11   0.270605110  0.02833561 1
+## 12   0.190975475  0.25000686 1
+## 13  -0.443565973 -0.62083784 1
+## 14  -1.635076715 -0.84039645 1
+## 15  -0.290002028 -0.28326424 1
+## 16   0.426080739 -0.20370955 1
+## 17   1.007962669  0.75547289 1
+## 18   0.123877772 -0.56654439 1
+## 19  -0.363279274 -0.16073713 1
+## 20   0.975605444  1.82198688 1
+## 21  -0.986092451 -0.35401839 1
+## 22   0.266490089  0.46790361 1
+## 23  -0.460177598 -0.55124824 1
+## 24   0.214689379  0.50417350 1
+## 25  -1.310893381 -1.36557832 1
+## 26   0.571674677 -1.47017518 1
+## 27  -0.421491215 -0.06312197 1
+## 28   1.058784112  0.68618326 1
+## 29  -1.040813929  0.22749491 1
+## 30  -0.826313756  1.34228656 1
+## 31   0.258040828 -0.98168201 1
+## 32  -1.031388299 -0.44151441 1
+## 33   0.534721864  0.65874115 1
+## 34  -0.136687702 -0.66039549 1
+## 35   0.857447918  1.47767592 1
+## 36   0.029600282  0.73782187 1
+## 37  -0.084106738 -0.17730509 1
+## 38   0.542115233  0.24691853 1
+## 39   0.508132641 -0.57768259 1
+## 40   0.707419939  0.08260488 1
+## 41  -0.237203180 -0.47020972 1
+## 42  -1.724849522 -1.97566639 1
+## 43  -0.341135905  0.61275943 1
+## 44   0.704605369  0.43863286 1
+## 45  -1.797931517  0.09734443 1
+## 46  -0.749448325 -1.17943915 1
+## 47  -1.166527696  0.40901930 1
+## 48  -0.527936051 -0.36599485 1
+## 49   0.905587625 -0.17986528 1
+## 50  -0.172286634  0.40465067 1
+## 51  -1.539278784  1.32555338 0
+## 52  -1.530970494  2.76676466 0
+## 53  -0.869729509  2.05954401 0
+## 54  -0.353617556  2.22555425 0
+## 55  -0.239257279  3.90208308 0
+## 56   1.107214605  3.68008812 0
+## 57  -0.584320546  3.81134906 0
+## 58   0.474751208  3.17856404 0
+## 59  -1.926121701  1.65653791 0
+## 60   1.788637894  2.11240854 0
+## 61   1.444387968  3.04370896 0
+## 62  -2.347051117  3.95709999 0
+## 63  -0.854439076  3.00233847 0
+## 64  -0.763200021  3.39781642 0
+## 65  -0.541024165  2.73791272 0
+## 66   0.266131161  3.25258267 0
+## 67   0.813833728  1.13745484 0
+## 68  -0.440852889  2.68046157 0
+## 69  -0.373919333  2.12553743 0
+## 70  -0.013641964  4.36603595 0
+## 71  -0.855535904  1.73847744 0
+## 72   0.073830703  4.46976265 0
+## 73  -0.149394445  3.58920171 0
+## 74  -0.425305774  3.31130838 0
+## 75   0.541018679  2.80793073 0
+## 76   3.094949613  4.19655356 0
+## 77   0.185610254  3.63148956 0
+## 78   0.920390799  4.37665166 0
+## 79   1.342121877  2.81592467 0
+## 80  -0.078695744  2.84072164 0
+## 81  -1.052105235  1.60788416 0
+## 82   1.012704543  4.06638534 0
+## 83   0.604837056  2.91320221 0
+## 84   0.546851518  3.24335662 0
+## 85   0.976894086  2.78188004 0
+## 86  -0.696081726  3.32365419 0
+## 87  -0.031083882  2.49047190 0
+## 88  -0.270089514  2.07041844 0
+## 89  -2.414635605  1.26424405 0
+## 90  -1.319344675  1.57530000 0
+## 91   1.749979485  4.29626181 0
+## 92  -2.717039301  1.62439933 0
+## 93  -0.152481602  3.83347560 0
+## 94   1.087848955  2.89238418 0
+## 95  -0.616692896  1.80844853 0
+## 96   0.395046421  4.37703778 0
+## 97   0.384711553  1.72732833 0
+## 98   0.601164639  2.48151771 0
+## 99   1.791679067  3.62085466 0
+## 100  0.194970575  2.05591896 0
+## 101  0.773393145 -0.27843650 1
+## 102  1.507779804  2.03929842 1
+## 103  1.164529949  1.24181394 1
+## 104  0.339819696 -0.68502139 1
+## 105  1.638209514  1.78236880 1
+## 106  1.296281856  1.07538563 1
+## 107  4.095470776  3.11813928 1
+## 108  1.845125897  2.18040613 1
+## 109  0.207312186  1.79467881 1
+## 110  1.217237449  2.48706332 1
+## 111  0.017141832  2.90447484 1
+## 112  1.540211165  2.22345008 1
+## 113  3.774380622  3.09740453 1
+## 114  1.074310231  0.91043980 1
+## 115  1.664255396  2.37386701 1
+## 116  3.130352845  2.07668371 1
+## 117  1.188497269  0.23226877 1
+## 118  0.781411202 -0.16377617 1
+## 119  1.138427003  1.36321545 1
+## 120  1.390839116  1.75029429 1
+## 121  2.124481138  1.46077071 1
+## 122  2.053543581  1.92703540 1
+## 123 -0.130247916  1.51212633 1
+## 124  3.248975766  2.74187728 1
+## 125  3.134764598  2.61627755 1
+## 126 -0.070281620  1.27337138 1
+## 127  1.776259304  1.86374632 1
+## 128  1.611052707  2.14872544 1
+## 129 -0.006460065  1.48572631 1
+## 130  1.720577653  2.59737034 1
+## 131  1.307727213  1.80361245 1
+## 132  3.614218201  3.36686428 1
+## 133  0.738574848  0.00979724 1
+## 134  0.127909949  1.00210351 1
+## 135  3.169227450  2.40862441 1
+## 136  1.098693063  1.50161260 1
+## 137  2.341841840  1.81009986 1
+## 138  0.495129959  0.49514189 1
+## 139  2.027552666  2.84573105 1
+## 140  1.732818673  2.00193788 1
+## 141  2.366085064  1.97808392 1
+## 142  1.036425864  0.71166735 1
+## 143  1.100867873  2.78087660 1
+## 144  3.074268275  0.19353272 1
+## 145  1.456746910  2.07888502 1
+## 146  2.875885065  0.67233273 1
+## 147  2.249214653  1.97652288 1
+## 148  1.560579030  0.63845949 1
+## 149  3.123914657  2.81763199 1
+## 150 -0.514781014  2.02177823 1
+\end{verbatim}
+
+\hypertarget{fit-a-logistic-regression-model-based-on-the-training-data-generated-in-3.1.}{%
+\paragraph{Fit a logistic regression model based on the training data
+generated in
+3.1.}\label{fit-a-logistic-regression-model-based-on-the-training-data-generated-in-3.1.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model.logReg }\OtherTok{\textless{}{-}}\NormalTok{ nnet}\SpecialCharTok{::}\FunctionTok{multinom}\NormalTok{(y }\SpecialCharTok{\textasciitilde{}}\NormalTok{., }\AttributeTok{data =}\NormalTok{ train.data3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # weights:  4 (3 variable)
+## initial  value 103.972077 
+## iter  10 value 26.965628
+## final  value 25.325262 
+## converged
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#summary(model.logReg)}
+\NormalTok{predicted.logReg }\OtherTok{\textless{}{-}}\NormalTok{ model.logReg }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{predict}\NormalTok{(train.data3)}
+\FunctionTok{print}\NormalTok{(predicted.logReg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   [1] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+##  [38] 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 0 0
+##  [75] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 1 1 1 1 1 1 1 1 1 0
+## [112] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1
+## [149] 1 0
+## Levels: 0 1
+\end{verbatim}
+
+\hypertarget{fit-a-linear-discriminant-analysis-model-based-on-the-training-data-generated-in-3.1.}{%
+\paragraph{Fit a linear discriminant analysis model based on the
+training data generated in
+3.1.}\label{fit-a-linear-discriminant-analysis-model-based-on-the-training-data-generated-in-3.1.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model.lda}\OtherTok{\textless{}{-}} \FunctionTok{lda}\NormalTok{(y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ .,}\AttributeTok{data=}\NormalTok{train.data3)}
+\CommentTok{\#print(model.lda)}
+
+\NormalTok{predictions.lda }\OtherTok{=} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{predict}\NormalTok{(model.lda, train.data3))}
+\CommentTok{\#print(predictions.lda)}
+
+\CommentTok{\#print(train.data3)}
+
+\NormalTok{confusionM.lda}\OtherTok{\textless{}{-}}\FunctionTok{confusionMatrix}\NormalTok{(predictions.lda}\SpecialCharTok{$}\NormalTok{class,train.data3}\SpecialCharTok{$}\NormalTok{y)}
+
+\FunctionTok{print}\NormalTok{(confusionM.lda)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Confusion Matrix and Statistics
+## 
+##           Reference
+## Prediction  0  1
+##          0 47  4
+##          1  3 96
+##                                          
+##                Accuracy : 0.9533         
+##                  95% CI : (0.9062, 0.981)
+##     No Information Rate : 0.6667         
+##     P-Value [Acc > NIR] : <2e-16         
+##                                          
+##                   Kappa : 0.8955         
+##                                          
+##  Mcnemar's Test P-Value : 1              
+##                                          
+##             Sensitivity : 0.9400         
+##             Specificity : 0.9600         
+##          Pos Pred Value : 0.9216         
+##          Neg Pred Value : 0.9697         
+##              Prevalence : 0.3333         
+##          Detection Rate : 0.3133         
+##    Detection Prevalence : 0.3400         
+##       Balanced Accuracy : 0.9500         
+##                                          
+##        'Positive' Class : 0              
+## 
+\end{verbatim}
+
+\hypertarget{if-we-know-the-input-variables-come-from-a-normal-distribution-theoretically-which-model-should-perform-better-logistic-regression-or-lda-why}{%
+\paragraph{If we know the input variables come from a normal
+distribution, theoretically which model should perform better, logistic
+regression or LDA?
+Why?}\label{if-we-know-the-input-variables-come-from-a-normal-distribution-theoretically-which-model-should-perform-better-logistic-regression-or-lda-why}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Linear regression should perform better because the LDA assumes normal distribution.}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

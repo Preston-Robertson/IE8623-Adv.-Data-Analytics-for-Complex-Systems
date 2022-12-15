@@ -1,0 +1,280 @@
+---
+title: "Midterm"
+author: "Preston Robertson"
+date: "October 17, 2021"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+#### Libraries
+```{r}
+library(glmnet)  
+library(dplyr)  
+library(psych)
+library(tidyverse)
+library(caret)
+library(pls)
+library(e1071)
+library(MASS)
+library(klaR)
+library(nnet)
+library(MASS)
+```
+
+#### Question  1 ######################################################################################################
+#### Loading Data
+```{r}
+data("state")
+statdata<-data.frame(state.x77,row.names=state.abb)
+summary(statdata)
+statdata[24, ]
+```
+####The data were collected from US Bureas of the Census on the 50 states from the 1970s. Use “statdata”to perform regressionanalysis. More information about the variables are available from the help file of R.We will take life expectancy (Life.Exp)as the response and the remaining variables as predictors.Use all the rows except for the row of MS as our training set, and the row of MS as our testing set.
+```{r}
+training.data <- statdata[-24, ]
+test.data <- statdata[24, ]
+test.data
+```
+
+#### Fit a linear regression model using the training set based on all the predictors. Interpret all the coefficients you estimated.
+```{r}
+lmfit.LE<-lm(formula=Life.Exp ~ Population+Income+Illiteracy+Murder+HS.Grad+Frost+Area, data=training.data)
+summary(lmfit.LE)
+
+# Results
+# Looking at the model,
+# Population: Seems to have both a low effect on the life expectancy (Estimate) and a low standard error (Std. error) this means this coefficient is probably non-essential to our model unless interaction terms prove otherwise.
+# Income: Same as population but is very likely to be non-essential to our model.
+# Illiteracy: Plays a big role in predicting the LE, and is the best stand alone predicting variable.
+# Murder: Also plays a big role in predicting the LE and is the second best stand alone predicting variable.
+# HS.Grad: Is a good estimator of LE and should be used in the model.
+# Frost: Has some correlation with LE and has high std. Error. Can be used in the model.
+# Area: Is the worst predicting variable for LE and has very high error. Should not be used in the model.
+```
+#### What is the R2 value of the model 1.1? How to interpret this value?
+```{r}
+# The Rsq from the previous model is .6759. The Rsq is a measure of fit (accuracy of the model) so with a 67% accuracy our model is in much need of improvement.
+```
+#### Calculate the point estimate and 95% confidence interval (CI) for the mean life expectancy for MS. 
+```{r}
+n <- length(training.data$Life.Exp)
+xbar <- mean(training.data$Life.Exp, na.rm = TRUE)
+s <- sd(training.data$Life.Exp)
+
+margin <- qt(0.975,df=n-1)*s/sqrt(n)
+
+low <- xbar - margin
+low
+
+high <- xbar + margin
+high
+```
+
+
+#### Look  atthe  model in  1.1, list  at  least THREE different models that can potentially  improve  the  performance. Explain  your  rationality  behind  your  selection, and train those threemodels. Do they actually perform better than the model obtained in 1.1? Explain possible reasons.
+```{r}
+# This is the base line predictor for the later models
+
+predictions <- lmfit.LE %>% predict(test.data)
+
+print(predictions)
+print(test.data)
+
+data.frame(
+  RMSE = caret::RMSE(predictions, test.data$Life.Exp),
+  Rsquare = caret::R2(predictions, test.data$Life.Exp)
+)
+
+```
+```{r}
+# Proof of finding better models
+ 
+lm.null<-lm(Life.Exp~ 1, data=statdata)
+
+lm.aic.both<-step(lm.null,direction="both",trace=1,scope= ~
+Population*Income+Income*Illiteracy+Illiteracy*Murder+Murder*HS.Grad+HS.Grad*Frost+Frost*Area+Area*Population+Population*Illiteracy+Income*Murder+Illiteracy*HS.Grad+Murder*Frost+HS.Grad*Area+Frost*Population+Area*Income+Population*Murder+Income*HS.Grad+Illiteracy*Frost+Murder*Area+HS.Grad*Population+Frost*Income+Area*Illiteracy+Population*HS.Grad+Income*Frost+Illiteracy*Area+Murder*Population+HS.Grad*Income+Frost*Illiteracy+Area*Murder+Population*Frost+Income*Area+Illiteracy*Population+Murder*Income+HS.Grad*Illiteracy+Frost*Murder+Area*HS.Grad+Population*Area+Income*Population+Illiteracy*Income+Murder*Illiteracy+HS.Grad*Murder+Frost*HS.Grad+Area*Frost, data=training.data)
+
+summary(lm.aic.both)
+
+```
+```{r}
+## New Model 1
+#  This model has a lower Adjusted R-Squared, however the model is less complex and more likely to have a lower testing error. We only had one testing sample and it was less accurate by .09 years. However, over larger predicting data this model will be faster to run.
+
+lmfit.LE1<-lm(formula=Life.Exp ~ Murder + HS.Grad + Frost, data=training.data)
+summary(lmfit.LE1)
+
+
+predictions <- lmfit.LE1 %>% predict(test.data)
+
+print(predictions)
+print(test.data)
+
+
+```
+```{r}
+## New Model 2
+# This model is less complex than the original model and predicts better than both stated above models by .1 years. This means this model is so far the best
+
+lmfit.LE2<-lm(formula=Life.Exp ~ Murder + HS.Grad + Frost + Population, data=training.data)
+summary(lmfit.LE2)
+
+predictions <- lmfit.LE2 %>% predict(test.data)
+
+print(predictions)
+print(test.data)
+
+```
+```{r}
+## New Model 3
+# This model is the best since it is the closest to predicting the correct lifespan. It is same complexity as the first model however makes us for in its accuracy.However all the models were still off by atleast an entire year.
+
+lmfit.LE3<-lm(formula=Life.Exp ~ Murder + HS.Grad + Frost + Population + Murder:Population, data=training.data)
+summary(lmfit.LE3)
+
+predictions <- lmfit.LE3 %>% predict(test.data)
+
+print(predictions)
+print(test.data)
+```
+
+
+
+#### Question  2 ######################################################################################################
+#### Loading Data
+```{r}
+library(mlbench)
+data("PimaIndiansDiabetes2")
+head(PimaIndiansDiabetes2)
+```
+#### Take diabetes as the response, and all the other variables as predictors. (To simply the problem, you may remove the rows with NA using the function “na.omit”).Split the dataset to 80% training and 20% testing sets (set the seed as 100).
+```{r}
+
+set.seed(100)
+
+new.data2 <- na.omit(PimaIndiansDiabetes2, na.action = "omit", fill = NULL)
+
+training.samples <- new.data2$diabetes %>%
+  createDataPartition(p = 0.80, list = FALSE)
+train.data2  <- new.data2[training.samples, ]
+test.data2 <- new.data2[-training.samples, ]
+
+print(train.data2)
+
+```
+
+
+#### Fit a linear SVM model based on the training set(use function tune.svm to find the best C parameter). Evaluate its classification performance using the testing set. List the Type I and Type II errors, respectively.
+```{r}
+
+
+tune.svm(diabetes ~ ., data = train.data2, cost = (.01:10))
+
+svmfit = svm(diabetes ~ ., data = train.data2, kernel = "linear", cost = 4.01, scale = FALSE)
+print(svmfit)
+data.test.svm<-predict(svmfit,test.data2)
+
+
+ConfusionM.svm<-confusionMatrix(data.test.svm,test.data2$diabetes)
+print(ConfusionM.svm)
+
+```
+#### Fit a nonlinear SVM modelbased on the training set (use function tune.svm to find the best C parameter). Compare the Type I and Type II errors with the onesyou obtained from 2.1. Which one is better? Why?
+```{r}
+
+svmfit = svm(diabetes ~ ., data = train.data2, kernel = "radial", cost = 4.01, scale = FALSE)
+print(svmfit)
+data.test.svm<-predict(svmfit,test.data2)
+
+
+ConfusionM.svm<-confusionMatrix(data.test.svm,test.data2$diabetes)
+print(ConfusionM.svm)
+
+# The accuracy is higher for the linear model, which means the linear svm model is better.  
+
+```
+
+
+
+#### Question  3 ######################################################################################################
+#### Use mvrnormfunction to generate the training data set below (use seed(100)):
+## a)Generate three groups of two-dimensional data (50 rows in each group) with their mean  as 𝜇1=[0,0]𝑇, 𝜇2=[0,3]𝑇, 𝜇3=[1.5,1.5]𝑇,  and  the  common covariance matrix ∑=[10.50.51].
+## b)X  is obtained  by  concatenating  the  three  groups  together (150  samples  of  two-dimensional input)
+## c)Y is a 150*1 vector with the first 50 elements equal to 1, the second 50 elements equal to 0, and the third 50 elements equal to 1
+```{r}
+
+# A)
+set.seed(100)
+
+n <- 50
+R <- matrix(c(1, 0.5,
+              0.5, 1), 
+            nrow = 2, ncol = 2)
+
+mu <- c(X1 = 0, X2 = 0)
+train.data1 <- mvtnorm::rmvnorm(n, mean = mu, sigma = R)
+train.data1 <- MASS::mvrnorm(n, mu = mu, Sigma = R)
+
+
+R <- matrix(c(1, 0.5,
+              0.5, 1), 
+            nrow = 2, ncol = 2)
+
+mu <- c(X1 = 0, X2 = 3)
+train.data2 <- mvtnorm::rmvnorm(n, mean = mu, sigma = R)
+train.data2 <- MASS::mvrnorm(n, mu = mu, Sigma = R)
+                             
+R <- matrix(c(1, 0.5,
+              0.5, 1), 
+            nrow = 2, ncol = 2)
+
+mu <- c(X1 = 1.5, X2 = 1.5)
+train.data3 <- mvtnorm::rmvnorm(n, mean = mu, sigma = R)
+train.data3 <- MASS::mvrnorm(n, mu = mu, Sigma = R)
+
+#head(train.data1)
+#head(train.data2)
+#head(train.data3)
+
+
+# B)
+x <- rbind(train.data1,train.data2,train.data3)
+x.df <- as.data.frame(x)
+#print(x)
+
+# C)
+y <- rep(c(1, 0, 1), c(50, 50, 50))
+#print(y)
+
+train.data3 <- data.frame(x, y = as.factor(y))
+print(train.data3)
+```
+
+#### Fit a logistic regression model based on the training data generated in 3.1.
+```{r}
+model.logReg <- nnet::multinom(y ~., data = train.data3)
+#summary(model.logReg)
+predicted.logReg <- model.logReg %>% predict(train.data3)
+print(predicted.logReg)
+```
+#### Fit a linear discriminant analysis model based on the training data generated in 3.1.
+```{r}
+
+model.lda<- lda(y ~ .,data=train.data3)
+#print(model.lda)
+
+predictions.lda = data.frame(predict(model.lda, train.data3))
+#print(predictions.lda)
+
+#print(train.data3)
+
+confusionM.lda<-confusionMatrix(predictions.lda$class,train.data3$y)
+
+print(confusionM.lda)
+
+```
+#### If we know the input variables come from a normal distribution, theoretically which model should perform better, logistic regression or LDA? Why?
+```{r}
+# Linear regression should perform better because the LDA assumes normal distribution.
+
+```
